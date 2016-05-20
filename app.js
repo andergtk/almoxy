@@ -1,6 +1,6 @@
 var express = require('express');
-var consign = require('consign');
 var mongoose = require('mongoose');
+var load = require('consign');
 
 var app = express();
 
@@ -19,7 +19,7 @@ app.set('view engine', 'ejs');
 // define a pasta dos arquivos estaticos
 app.use(express.static(__dirname + '/public'));
 
-consign({ locale: 'pt-br'})
+load({ locale: 'pt-br'})
   .include('controllers')
   .then('models')
   .then('routes')
