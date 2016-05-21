@@ -1,38 +1,32 @@
-var express = require('express');
-var mongoose = require('mongoose');
-var load = require('consign');
+'use strict';
 
-var app = express();
+const express = require('express');
+const app     = express();
+const path    = require('path');
+const config  = require('./config');
 
-// conecta ao banco de dados
-mongoose.connect('mongodb://localhost/almoxy', function(err) {
-  if (err) {
-    console.log('Erro ao conectar ao banco de dados: ' + err);
-  } else {
-    console.log('Conectado ao banco de dados.');
-  }
-});
+const main_controller  = require('./controllers/index');
+const items_controller = require('./controllers/items');
 
 // define o ejs como view engine
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// define a pasta dos arquivos estaticos
-app.use(express.static(__dirname + '/public'));
+// define a pasta dos arquivos estáticos
+app.use(express.static(path.join(__dirname, 'public')));
 
-load({ locale: 'pt-br'})
-  .include('controllers')
-  .then('models')
-  .then('routes')
-  .into(app);
+// as rotas estão no "controller"
+app.use(main_controller);
+app.use(items_controller);
 
 // trata o erro 404
 app.get('*', function(req, res) {
-  res.status(404).render('erros/404', {
-    titulo: 'Erro 404',
-    mensagem: 'Não encontrado',
+  res.status(404).render('errors/404', {
+    title: 'Erro 404',
+    message: 'Não encontrado'
   });
 });
 
-app.listen(3000, function() {
-  console.log('Servidor rodando na porta 3000');
-})
+app.listen(config.port, function() {
+  console.log('[Servidor] Rodando na porta', config.port);
+});
