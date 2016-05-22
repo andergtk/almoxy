@@ -1,66 +1,14 @@
 <% include templates/header %>
 
+	<br>
 	<div class="row">
 		<div class="col-md-8">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Almoxarifado</h3>
-				</div>
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							<th style="width: 50px; text-align: center;"><input type="checkbox"></th>
-							<th style="width: 50px; text-align: center;">#</th>
-							<th>Descrição</th>
-							<th style="width: 100px; text-align: center;">Quantidade</th>
-							<th style="width: 100px; text-align: center;">Ações</th>
-						</tr>
-					</thead>
-					<tbody>
-						<% for (var i = 0; i < 5; i++) { %>
-							<tr>
-								<td style="text-align: center;"><input type="checkbox"></td>
-								<td style="text-align: center;"><%= i %></td>
-								<td><a href="#"><p>Item <%= i %></p></a></td>
-								<td style="text-align: right;"><%= parseInt( Math.random() * (100 - 10) + 10 ) %></td>
-								<td style="text-align: center;">
-									<a class="btn btn-sm" href="#"><span class="glyphicon glyphicon-trash"></span></a>
-									<a class="btn btn-sm" href="#"><span class="glyphicon glyphicon-edit"></span></a>
-								</td>
-							</tr>
-						<% } %>
-					</tbody>
-				</table>
-			</div><!-- almoxarifado -->
-
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Achados e Perdidos</h3>
-				</div>
-				<table class="table">
-					<thead>
-						<tr>
-							<th style="text-align: center;">#</th>
-							<th>Descrição</th>
-							<th style="text-align: center;">Quantidade</th>
-							<th style="text-align: center;">Ações</th>
-						</tr>
-					</thead>
-				</table>
-			</div><!-- achados e perdidos -->
+			<% include templates/almoxarifado %>
+			<% include templates/achados_e_perdidos %>
 		</div>
 
 		<div class="col-md-4">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Novo item</h3>
-				</div>
-				<div class="panel-body">
-					<form action="/item" method="post">
-						<button class="btn btn-success" type="submit">Cadastrar</button>
-					</form>
-				</div>
-			</div>
+			<% include templates/novo_item %>
 		</div>
 	</div>
 
