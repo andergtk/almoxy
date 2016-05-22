@@ -1,30 +1,58 @@
 'use strict';
 
-const express = require('express');
-const app     = express();
-const path    = require('path');
-const config  = require('./config');
+const express      = require('express');
+const session      = require('express-session');
+const flash        = require('express-flash');
+const cookieParser = require('cookie-parser');
+const bodyParser   = require('body-parser');
+const path         = require('path');
+const config       = require('./config');
+const db           = require('./models/db');
 
-const main_controller  = require('./controllers/index');
-const items_controller = require('./controllers/items');
+// Inicializa o app
+const app = express();
 
-// define o ejs como view engine
+// Rotas
+const main     = require('./routes/main');
+const itens    = require('./routes/itens');
+const usuarios = require('./routes/usuarios');
+
+// Middlewares do projeto
+const autenticacao = require('./middlewares/autenticacao');
+const validacao    = require('./middlewares/validacao');
+
+// Define o EJS como view engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// define a pasta dos arquivos estáticos
+// Define o diretório com os arquivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
-// as rotas estão no "controller"
-app.use(main_controller);
-app.use(items_controller);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser(config.cookieSecret));
+app.use(session({
+  resave: true
+, saveUninitialized: false
+, secret: config.sessionSecret
+}));
+app.use(flash());
 
-// trata o erro 404
+app.use(autenticacao);
+app.post('/item', validacao.item);
+app.post('/usuario', validacao.usuario);
+
+app.use(main);
+app.use(itens);
+app.use(usuarios);
+
+// Trata o erro 404
 app.get('*', function(req, res) {
-  res.status(404).render('errors/404', {
-    title: 'Erro 404',
-    message: 'Não encontrado'
-  });
+  res.status(404)
+    .render('404', {
+      titulo: '404'
+    , mensagem: 'Não encontrado.'
+    });
 });
 
 app.listen(config.port, function() {

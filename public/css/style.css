@@ -1,5 +1,11 @@
+/** Modifica a aparência padrão do Bootstrap */
+.container { max-width: 900px; }
+.navbar-brand {
+  font-weight: bold;
+  line-height: 1.3;
+}
+.card-header { margin-bottom: 0; }
 .table { margin-bottom: 0; }
 .table tbody tr { cursor: pointer; }
 .table tbody td.item-descricao { color: #0275d8; }
 .table tbody td.item-descricao:hover { color: #025aa5; }
-.card-header { margin-bottom: 0; }

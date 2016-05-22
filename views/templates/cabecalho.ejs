@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title><%= titulo %> - Almoxy</title>
+		<link rel="stylesheet" href="/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/css/octicons/octicons.css">
+		<link rel="stylesheet" href="/css/style.css">
+	</head>
+	<body>
+		<nav class="navbar navbar-full navbar-dark bg-inverse">
+			<div class="container">
+				<a class="navbar-brand" href="/">Almoxy</a>
+				<ul class="nav navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="/achados-e-perdidos">Achados e Perdidos</a>
+					</li>
+				</ul>
+			</div>
+		</nav><!-- .navbar -->
+
+		<div class="container">
+			<br>
+			<% if (messages.erro) { %>
+				<div class="alert alert-danger">
+					<strong><%= messages.erro %></strong>
+				</div>
+			<% } else if (messages.info) { %>
+				<div class="alert alert-info">
+					<strong><%= messages.info %></strong>
+				</div>
+			<% } else if (messages.success) { %>
+				<div class="alert alert-success">
+					<strong><%= messages.success %></strong>
+				</div>
+			<% } %>

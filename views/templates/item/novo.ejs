@@ -1,29 +1,29 @@
 <div class="card">
-	<h4 class="card-header">Novo item</h4>
+	<h5 class="card-header">Novo item</h5>
 	<form action="/item" method="post">
 		<div class="card-block">
 			<div class="btn-group" data-toggle="buttons">
 				<p>Tipo</p>
 				<label class="btn btn-secondary active">
-					<input name="item_tipo" type="radio" value="0" checked>
+					<input name="item[tipo]" type="radio" value="0" checked>
 					Almoxarifado
 				</label>
 				<label class="btn btn-secondary">
-					<input name="item_tipo" type="radio" value="1">
+					<input name="item[tipo]" type="radio" value="1">
 					Achados e perdidos
 				</label>
 			</div>
 			<fieldset class="form-group">
 				<label for="novo-item-descricao">Descrição</label>
-				<input id="novo-item-descricao" class="form-control" name="item_descricao" type="text">
+				<input id="novo-item-descricao" class="form-control" name="item[descricao]" type="text">
 			</fieldset>
 			<fieldset class="form-group">
 				<label for="novo-item-comentario">Comentário</label>
-				<textarea id="novo-item-comentario" class="form-control" name="item_comentario" rows="3"></textarea>
+				<textarea id="novo-item-comentario" class="form-control" name="item[comentario]" rows="3"></textarea>
 			</fieldset>
 			<fieldset class="form-group">
 				<label for="novo-item-quantidade">Quantidade</label>
-				<input id="novo-item-quantidade" class="form-control" name="item_quantidade" type="number" value="0">
+				<input id="novo-item-quantidade" class="form-control" name="item[quantidade]" type="number" value="0">
 			</fieldset>
 		</div>
 		<div class="card-footer">

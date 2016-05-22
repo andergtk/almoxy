@@ -1,31 +1,8 @@
 'use strict';
 
-const mongoose = require('mongoose');
-
-const config = {
+module.exports = {
   port: process.env.PORT || 3000
-, db_url: 'mongodb://localhost/almoxy'
+, dbURL: 'mongodb://localhost/almoxy'
+, cookieSecret: '2aEhAr5doPVwiCkdLGx8pcG5jTvmPodY2eM3SmbMc4xgNzgp'
+, sessionSecret: 'oU44aFlsXMtwpgzrKklBdmpfYQOeKBerUONsQXcShQhwMuvg'
 }
-
-mongoose.connect(config.db_url);
-
-mongoose.connection.on('connected', () => {
-  console.log('[Mongoose] Conectado ao banco de dados.');
-})
-
-mongoose.connection.on('error', (err) => {
-  console.log('[Mongoose] Erro na conexão: ', err);
-});
-
-mongoose.connection.on('disconnected', () => {
-  console.log('[Mongoose] Desconectado do banco de dados.');
-});
-
-process.on('SIGINT', () => {
-  mongoose.connection.close(() => {
-    console.log('[Mongoose] Conexão encerrada.');
-    process.exit(0);
-  });
-});
-
-module.exports = config;
