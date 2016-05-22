@@ -11,11 +11,11 @@
 			</tr>
 		</thead>
 		<tbody>
-			<% for (var i = 0; i < 5; i++) { %>
-				<tr>
+			<% for (var i = 0; i < 4; i++) { %>
+				<tr data-item-id="<%= i %>">
 					<td style="text-align: center;"><input type="checkbox"></td>
 					<td style="text-align: center;"><%= i %></td>
-					<td><a href="#">Item <%= i %></a></td>
+					<td class="item-descricao">Item <%= i %>x</td>
 					<td style="text-align: right;"><%= parseInt( Math.random() * (100 - 10) + 10 ) %></td>
 					<td style="text-align: center;">
 						<a class="btn btn-secondary btn-sm" href="#"><span class="octicon octicon-pencil"></span></a>

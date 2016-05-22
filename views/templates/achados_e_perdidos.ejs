@@ -1,15 +1,28 @@
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<h3 class="panel-title">Achados e Perdidos</h3>
-	</div>
-	<table class="table">
+<div class="card">
+	<h4 class="card-header">Achados e Perdidos</h4>
+	<table class="table table-bordered table-hover">
 		<thead>
 			<tr>
-				<th style="text-align: center;">#</th>
+				<th style="width: 50px; text-align: center;"><input type="checkbox"></th>
+				<th style="width: 50px; text-align: center;">#</th>
 				<th>Descrição</th>
-				<th style="text-align: center;">Quantidade</th>
-				<th style="text-align: center;">Ações</th>
+				<th style="width: 200px; text-align: center;">Comentário</th>
+				<th style="width: 120px; text-align: center;">Ações</th>
 			</tr>
 		</thead>
+		<tbody>
+			<% for (var i = 0; i < 4; i++) { %>
+				<tr>
+					<td style="text-align: center;"><input type="checkbox"></td>
+					<td style="text-align: center;"><%= i %></td>
+					<td class="item-descricao">Item <%= i %></td>
+					<td>Comentário sobre o item de número <%= i %>.</td>
+					<td style="text-align: center;">
+						<a class="btn btn-secondary btn-sm" href="#"><span class="octicon octicon-pencil"></span></a>
+						<a class="btn btn-secondary btn-sm" href="#"><span class="octicon octicon-trashcan"></span></a>
+					</td>
+				</tr>
+			<% } %>
+		</tbody>
 	</table>
 </div><!-- achados e perdidos -->

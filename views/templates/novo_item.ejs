@@ -1,7 +1,18 @@
 <div class="card">
 	<h4 class="card-header">Novo item</h4>
-	<div class="card-block">
-		<form action="/item" method="post">
+	<form action="/item" method="post">
+		<div class="card-block">
+			<div class="btn-group" data-toggle="buttons">
+				<p>Tipo</p>
+				<label class="btn btn-secondary active">
+					<input name="item_tipo" type="radio" value="0" checked>
+					Almoxarifado
+				</label>
+				<label class="btn btn-secondary">
+					<input name="item_tipo" type="radio" value="1">
+					Achados e perdidos
+				</label>
+			</div>
 			<fieldset class="form-group">
 				<label for="novo-item-descricao">Descrição</label>
 				<input id="novo-item-descricao" class="form-control" name="item_descricao" type="text">
@@ -14,18 +25,9 @@
 				<label for="novo-item-quantidade">Quantidade</label>
 				<input id="novo-item-quantidade" class="form-control" name="item_quantidade" type="number" value="0">
 			</fieldset>
-			<div class="btn-group" data-toggle="buttons">
-				<p>Tipo</p>
-				<label class="btn btn-secondary active">
-					<input name="item_tipo" type="radio" value="0" checked>
-					Almoxarifado
-				</label>
-				<label class="btn btn-secondary">
-					<input name="item_tipo" type="radio" value="1">
-					Achados e perdidos
-				</label>
-			</div>
+		</div>
+		<div class="card-footer">
 			<button class="btn btn-success" type="submit">Cadastrar</button>
-		</form>
-	</div>
+		</div>
+	</form>
 </div><!-- novo item -->
