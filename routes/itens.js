@@ -1,5 +1,7 @@
 'use strict';
 
-module.exports = (req, res, next) => {
-  next();
+module.exports = (app) => {
+  const itensController = require('../controllers/itens');
+
+  // ...
 }

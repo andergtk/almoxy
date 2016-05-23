@@ -1,5 +1,5 @@
 'use strict';
 
-module.exports = (req, res, next) => {
-  next();
+exports.novo = (req, res) => {
+  res.send('Novo usuário');
 }
