@@ -1,0 +1,13 @@
+<% if (messages.erro) { %>
+	<div class="alert alert-danger">
+		<strong><%= messages.erro %></strong>
+	</div>
+<% } if (messages.info) { %>
+	<div class="alert alert-info">
+		<strong><%= messages.info %></strong>
+	</div>
+<% } if (messages.success) { %>
+	<div class="alert alert-success">
+		<strong><%= messages.success %></strong>
+	</div>
+<% } %>

@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal-item-remove" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modal-item-delete" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -11,9 +11,12 @@
 				<p>Tem certeza que deseja remover este item?</p>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-				<a class="btn btn-danger remove-link">Remover</a>
+				<form action="/item/delete" method="post">
+					<input type="hidden" name="id">
+					<button class="btn btn-secondary" type="reset" data-dismiss="modal">Cancelar</button>
+					<button class="btn btn-danger delete-link" type="submit">Remover</button>
+				</form>
 			</div>
 		</div>
 	</div>
-</div>
+</div><!-- #modal-item-delete -->

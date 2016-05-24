@@ -1,10 +1,20 @@
-<% include templates/header %>
-
+<% include templates/cabecalho %>
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-md-12">
 			<div class="card">
-				<h5 class="card-header">Almoxarifado</h5>
-				<% if (itensAlmoxarifado.length) { %>
+				<div class="card-header">
+					<div class="row ">
+						<h4 class="col-md-9">Almoxarifado</h4>
+						<div class="col-md-3">
+							<a class="btn btn-success btn-block" href="/item/novo">Novo item</a>
+						</div>
+					</div>
+				</div>
+				<% if (itensAlmoxarifado.length < 1) { %>
+					<div class="card-block">
+						<p>Nenhum registro encontrado</p>
+					</div>
+				<% } else { %>
 					<table class="table table-bordered table-hover">
 						<thead>
 							<tr>
@@ -21,10 +31,10 @@
 									<td class="item-descricao"><%= item.descricao %></td>
 									<td style="text-align: right;"><%= item.quantidade %></td>
 									<td style="text-align: center;">
-										<button class="btn btn-secondary btn-sm item-update" data-item-id="<%= item.id %>">
+										<button class="btn btn-secondary btn-sm item-update">
 											<span class="octicon octicon-pencil"></span>
 										</button>
-										<button class="btn btn-secondary btn-sm item-remove" data-item-id="<%= item.id %>">
+										<button class="btn btn-secondary btn-sm item-delete">
 											<span class="octicon octicon-trashcan"></span>
 										</button>
 									</td>
@@ -32,19 +42,11 @@
 							<% }); %>
 						</tbody>
 					</table>
-				<% } else { %>
-					<div class="card-block">
-						<p>Nenhum registro encontrado.</p>
-					</div>
 				<% } %>
-			</div><!-- almoxarifado -->
+			</div><!-- .card -->
 		</div>
-
-		<div class="col-md-4">
-			<% include templates/novo_item %>
-		</div>
-	</div>
-	<% include templates/modal_item %>
-	<% include templates/modal_remove %>
-
-<% include templates/footer %>
+	</div><!-- .row -->
+	<% include item/modal_info %>
+	<% include item/modal_edit %>
+	<% include item/modal_delete %>
+<% include templates/rodape %>
