@@ -3,8 +3,16 @@
 module.exports = (app) => {
   const itensController = require('../controllers/itens');
 
-  app.post('/item', itensController.novo);
-  app.get('/item/:id', itensController.info);
-  app.post('/item/:id', itensController.edit);
-  app.post('/item/delete/:id', itensController.delete);
+  // Novo item
+  app.get('/item/novo', itensController.form);
+  app.post('/item/novo', itensController.novo);
+
+  // Informações do item
+  app.get('/item/info/:id', itensController.info);
+
+  // Editar item
+  app.post('/item/edit', itensController.edit);
+
+  // Remover item
+  app.post('/item/delete', itensController.delete);
 }
