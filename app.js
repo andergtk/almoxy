@@ -6,9 +6,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const flash = require('express-flash');
 const path = require('path');
-
 const config = require('./config');
-const db = require('./models/db');
+const db = require('./models/db')(config.dbURL);
 
 const autenticacao = require('./middlewares/autenticacao');
 const validacao = require('./middlewares/validacao');
@@ -63,7 +62,7 @@ app.use((req, res, next) => {
 /**
  * Tratamento dos erros
  */
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('erro', {
       titulo: err.status || 500
@@ -71,6 +70,6 @@ app.use(function(err, req, res, next) {
     });
 });
 
-app.listen(config.port, function() {
-  console.log('[Servidor] Rodando na porta', config.port);
+app.listen(config.port, () => {
+  console.log(`[Servidor] Rodando na porta ${config.port}`);
 });
