@@ -8,4 +8,8 @@ module.exports = (app) => {
 
   // Achados e Perdidos
   app.get('/achados-e-perdidos', mainController.achadosEPerdidos);
+
+  // Login
+  app.get('/login', mainController.login);
+  app.post('/login', mainController.login);
 }
