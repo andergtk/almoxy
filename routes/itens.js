@@ -1,18 +1,22 @@
 'use strict';
 
 module.exports = (app) => {
-  const itensController = require('../controllers/itens');
+  const itensController = app.controllers.itens;
 
-  // Novo item
-  app.get('/item/novo', itensController.form);
-  app.post('/item/novo', itensController.novo);
+  // Criar item
+  app.route('/item/criar')
+    .get(itensController.form)
+    .post(itensController.criar);
 
   // Informações do item
-  app.get('/item/info/:id', itensController.info);
+  app.route('/item/info/:id')
+    .get(itensController.info);
 
   // Editar item
-  app.post('/item/edit', itensController.edit);
+  app.route('/item/editar')
+    .post(itensController.editar);
 
-  // Remover item
-  app.post('/item/delete', itensController.delete);
+  // Excluir item
+  app.route('/item/excluir')
+    .post(itensController.excluir);
 }

@@ -2,11 +2,11 @@
 
 const mongoose = require('mongoose');
 
-module.exports = (dbURL) => {
+module.exports = (uri) => {
   /**
    * Conexão com o banco de dados
    */
-  mongoose.connect(dbURL);
+  mongoose.connect(uri);
 
   /**
    * Eventos

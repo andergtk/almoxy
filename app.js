@@ -1,16 +1,18 @@
 'use strict';
 
-const express = require('express');
-const session = require('express-session');
+const express      = require('express');
+const session      = require('express-session');
 const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const flash = require('express-flash');
-const path = require('path');
-const config = require('./config');
-const db = require('./models/db')(config.dbURL);
+const bodyParser   = require('body-parser');
+const consign      = require('consign');
+const flash        = require('express-flash');
+const path         = require('path');
+const config       = require('./config');
+const db           = require('./db')(config.dbUri);
 
 const autenticacao = require('./middlewares/autenticacao');
-const validacao = require('./middlewares/validacao');
+const validacao    = require('./middlewares/validacao');
+const erros        = require('./middlewares/erros');
 
 const app = express();
 
@@ -38,37 +40,29 @@ app.use(session({
 }));
 app.use(flash());
 
-// Middlewares do projeto
+/**
+ * Middlewares do projeto
+ */
 app.use(autenticacao);
 app.post(/^\/item/, validacao.item);
 app.post(/^\/usuario/, validacao.usuario);
 
 /**
+ * Models
+ * Controllers
  * Rotas
  */
-const rotas = require('./routes/index')(app);
-const itens = require('./routes/itens')(app);
-const usuarios = require('./routes/usuarios')(app);
+consign({ locale: 'pt-br' })
+  .include('./models')
+  .then('./controllers')
+  .then('./routes')
+  .into(app);
 
 /**
- * Lança o erro 404 se nenhuma rota for chamada
+ * Middlewares para tratamento dos erros
  */
-app.use((req, res, next) => {
-  let err = new Error('Não Encontrado');
-  err.status = 404;
-  next(err);
-});
-
-/**
- * Tratamento dos erros
- */
-app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.render('erro', {
-      titulo: err.status || 500
-    , mensagem: err.message
-    });
-});
+app.use(erros.e404);
+app.use(erros.mensagem);
 
 app.listen(config.port, () => {
   console.log(`[Servidor] Rodando na porta ${config.port}`);

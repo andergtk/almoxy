@@ -7,19 +7,35 @@ $(document).ready(function() {
   // Informações do item
   $('.table tbody tr').on('click', function() {
     var itemId = $(this).attr('data-item-id');
-    console.log('Item selecionado:', itemId);
+
+    $('#modal-item-info').modal()
+      .on('shown.bs.modal', function() {
+        $(this)
+          .find('.btn-fechar')
+            .focus();
+      });
   });
 
   // Editar item
-  $('.item-edit').on('click', function() {
+  $('.item-editar').on('click', function(e) {
+    e.stopPropagation();
+
     var itemId = $(this)
-      .closets('tr')
+      .closest('tr')
         .attr('data-item-id');
-    console.log('Item selecionado:', itemId);
+
+    $('#modal-item-editar').modal()
+      .on('shown.bs.modal', function() {
+        $(this)
+          .find('.btn-salvar')
+            .focus();
+      });
   });
 
-  // Remover item
-  $('.item-delete').on('click', function() {
+  // Excluir item
+  $('.item-excluir').on('click', function(e) {
+    e.stopPropagation();
+
     var itemId = $(this)
       .closest('tr')
         .attr('data-item-id');
@@ -28,11 +44,14 @@ $(document).ready(function() {
       .find('.item-descricao')
         .text();
 
-    $('#modal-item-delete .item-descricao').text('"' + itemDescricao + '"');
-    $('#modal-item-delete').modal()
+    $('#modal-item-excluir .item-descricao').text('"' + itemDescricao + '"');
+    $('#modal-item-excluir').modal()
       .on('shown.bs.modal', function() {
-        $(this).find('input[name="id"]').attr('value', itemId);
-        $(this).find('.delete-link').focus();
+        $(this)
+          .find('input[name="id"]')
+            .attr('value', itemId)
+          .nextAll('.btn-excluir')
+            .focus();
       });
   });
 

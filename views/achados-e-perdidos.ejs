@@ -6,7 +6,7 @@
 					<div class="row ">
 						<h4 class="col-md-9">Achados e Perdidos</h4>
 						<div class="col-md-3">
-							<a class="btn btn-success btn-block" href="/item/novo">Novo item</a>
+							<a class="btn btn-success btn-block" href="/item/criar">Novo item</a>
 						</div>
 					</div>
 				</div>
@@ -33,10 +33,10 @@
 									<td><%= item.comentario %></td>
 									<td style="text-align: center;"><%= moment(item.criado_em).format('DD/MM/Y') %></td>
 									<td style="text-align: center;">
-										<button class="btn btn-secondary btn-sm item-update">
+										<button class="btn btn-secondary btn-sm item-editar">
 											<span class="octicon octicon-pencil"></span>
 										</button>
-										<button class="btn btn-secondary btn-sm item-delete">
+										<button class="btn btn-secondary btn-sm item-excluir">
 											<span class="octicon octicon-trashcan"></span>
 										</button>
 									</td>
@@ -48,7 +48,7 @@
 			</div><!-- .card -->
 		</div>
 	</div><!-- .row -->
-	<% include item/modal_info %>
-	<% include item/modal_edit %>
-	<% include item/modal_delete %>
+	<% include item/modal-info %>
+	<% include item/modal-editar %>
+	<% include item/modal-excluir %>
 <% include templates/rodape %>

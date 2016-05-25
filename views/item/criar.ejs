@@ -7,12 +7,12 @@
 					<div class="card-block">
 						<div class="btn-group" data-toggle="buttons">
 							<p>Tipo</p>
-							<label class="btn btn-secondary active">
-								<input name="item[tipo]" type="radio" value="0" checked>
+							<label class="btn btn-secondary <%= (opcao === 1) ? 'active' : '' %>">
+								<input name="item[tipo]" type="radio" value="0" <%= (opcao === 1) ? 'check' : '' %>>
 								Almoxarifado
 							</label>
-							<label class="btn btn-secondary">
-								<input name="item[tipo]" type="radio" value="1">
+							<label class="btn btn-secondary <%= (opcao === 2) ? 'active' : '' %>">
+								<input name="item[tipo]" type="radio" value="1" <%= (opcao === 2) ? 'check' : '' %>>
 								Achados e perdidos
 							</label>
 						</div>

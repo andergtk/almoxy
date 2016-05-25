@@ -1,36 +1,31 @@
 'use strict';
 
-/**
- * GET perfil do usuário
- */
-exports.perfil = (req, res) => {
-  res.send('Perfil do usuário');
-}
+module.exports = (app) => {
+  const Usuarios = app.models.usuarios;
 
-/**
- * POST novo usuário
- */
-exports.novo = (req, res) => {
-  res.send('Novo usuário');
-}
+  return {
+    perfil: (req, res) => {
+      res.send('Perfil do usuário');
+    }
 
-/**
- * GET informações do usuário
- */
-exports.info = (req, res) => {
-  res.send('Informações do usuário');
-}
+  , form: (req, res) => {
+      res.send('Formulário para adicionar novo usuário');
+    }
 
-/**
- * POST editar usuário
- */
-exports.edit = (req, res) => {
-  res.send('Editar usuário');
-}
+  , criar: (req, res) => {
+      res.send('Criar usuário');
+    }
 
-/**
- * POST remover usuário
- */
-exports.delete = (req, res) => {
-  res.send('Remover usuário');
+  , info: (req, res) => {
+      res.send('Informações do usuário');
+    }
+
+  , editar: (req, res) => {
+      res.send('Editar usuário');
+    }
+
+  , excluir: (req, res) => {
+      res.send('Remover usuário');
+    }
+  }
 }

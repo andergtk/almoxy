@@ -1,15 +1,18 @@
 'use strict';
 
 module.exports = (app) => {
-  const mainController = require('../controllers/index');
+  const controller = app.controllers.index;
 
   // Página inicial
-  app.get('/', mainController.index);
+  app.route('/')
+    .get(controller.index);
 
   // Achados e Perdidos
-  app.get('/achados-e-perdidos', mainController.achadosEPerdidos);
+  app.route('/achados-e-perdidos')
+    .get(controller.achadosEPerdidos);
 
   // Login
-  app.get('/login', mainController.login);
-  app.post('/login', mainController.login);
+  app.route('/login')
+    .get(controller.login)
+    .post(controller.login);
 }

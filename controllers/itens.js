@@ -1,51 +1,46 @@
 'use strict';
 
-const Itens = require('../models/itens');
+module.exports = (app) => {
+  const Itens = app.models.itens;
 
-/**
- * Formulário
- */
-exports.form = (req, res) => {
-  // Alterar campo achados e perdidos (true) quando o req.header(Referer) for
-  // o link /achados-e-perdidos
-  console.log(req.header('Referer'));
-  res.render('item/novo', {
-    titulo: 'Novo item'
-  , opcao: true // enviar essa opção para a view alterar o campo default
-  });
-}
+  return {
+    form: (req, res) => {
+      let opcao;
 
-/**
- * Novo item
- */
-exports.novo = (req, res) => {
-  res.send('Criar item');
-}
+      if (req.header('Referer').match(/\/achados-e-perdidos/)) {
+        opcao = 2
+      } else {
+        opcao = 1
+      }
 
-/**
- * Informações do item
- */
-exports.info = (req, res) => {
-  // Testar se req.get('Content-Type') é json ou html
-  // se json retorna json
-  // se html renderiza a pagina do item
-  res.json({ descricao: 'Informações do item', quantidade: 123 });
-}
+      res.render('item/criar', {
+        titulo: 'Criar item'
+      , opcao
+      });
+    }
 
-/**
- * Editar item
- */
-exports.edit = (req, res) => {
-  res.send({ descricao: 'Editar item', quantidade: 123 });
-}
+  , criar: (req, res) => {
+      res.send('Criar item');
+    }
 
-/**
- * Remover item
- */
-exports.delete = (req, res) => {
-  Itens.findOneAndRemove({ _id: req.body.id }, (err, data)  => {
-    if (err) res.send(err);
-    req.flash('info', 'Item removido com sucesso.');
-    res.redirect('/');
-  })
+  , info: (req, res) => {
+      // Testar se req.get('Content-Type') é json ou html
+      // se json retorna json
+      // se html renderiza a pagina do item
+      res.json({ descricao: 'Informações do item', quantidade: 123 });
+    }
+
+  , editar: (req, res) => {
+      res.send({ descricao: 'Editar item', quantidade: 123 });
+    }
+
+  , excluir: (req, res) => {
+      Itens.findOneAndRemove({ _id: req.body.id }, (err, data)  => {
+        if (err) res.send(err);
+        req.flash('info', 'Item removido com sucesso.');
+        res.redirect('/');
+      });
+    }
+
+  }
 }
