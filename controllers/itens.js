@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = (app) => {
-  const Itens = app.models.itens;
+  const itens = app.models.itens;
 
   return {
     form: (req, res) => {
@@ -35,7 +35,7 @@ module.exports = (app) => {
     }
 
   , excluir: (req, res) => {
-      Itens.findOneAndRemove({ _id: req.body.id }, (err, data)  => {
+      itens.findOneAndRemove({ _id: req.body.id }, (err, data)  => {
         if (err) res.send(err);
         req.flash('info', 'Item removido com sucesso.');
         res.redirect('/');

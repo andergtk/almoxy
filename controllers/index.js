@@ -1,11 +1,11 @@
 'use strict';
 
 module.exports = (app) => {
-  const Itens = app.models.itens;
+  const itens = app.models.itens;
 
   return {
     index: (req, res) => {
-      Itens.find({ tipo: false })
+      itens.find({ tipo: false })
         .sort({ criado_em: 'desc' })
         .exec((err, itensAlmoxarifado) => {
           if (err) {
@@ -21,7 +21,7 @@ module.exports = (app) => {
     }
 
   , achadosEPerdidos: (req, res) => {
-      Itens.find({ tipo: true })
+      itens.find({ tipo: true })
         .sort({ criado_em: 'desc' })
         .exec((err, itensAchadosEPerdidos) => {
           if (err) {

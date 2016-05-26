@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = (app) => {
-  const Usuarios = app.models.usuarios;
+  const usuarios = app.models.usuarios;
 
   return {
     perfil: (req, res) => {
