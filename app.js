@@ -59,7 +59,7 @@ consign({ locale: 'pt-br' })
   .into(app);
 
 /**
- * Middlewares para tratamento dos erros
+ * Tratamento dos erros
  */
 app.use(erros.e404);
 app.use(erros.mensagem);
