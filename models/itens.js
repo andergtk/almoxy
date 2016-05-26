@@ -10,7 +10,7 @@ const HistoricoSchema = new Schema({
   operacao: String
 , status: String
 , quantidade: { type: Number, default: 0 }
-, criado_em: { type: Date, default: Date.now }
+, data: { type: Date, default: Date.now }
 });
 
 /**
@@ -21,7 +21,7 @@ const ItemSchema = new Schema({
 , descricao: String
 , comentario: String
 , quantidade: { type: Number, default: 0 }
-, criado_em: { type: Date, default: Date.now }
+, data: { type: Date, default: Date.now }
 , historico: [HistoricoSchema]
 });
 

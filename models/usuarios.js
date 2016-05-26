@@ -20,6 +20,7 @@ const UsuarioSchema = new Schema({
 , senha: String
 , funcao: String
 , telefones: [TelefoneSchema]
+, data: { type: Date, default: Date.now }
 });
 
 /**
