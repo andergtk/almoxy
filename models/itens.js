@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 /**
- * Schema do histórico
+ * Schema do histórico do item
  */
 const HistoricoSchema = new Schema({
   operacao: Number
