@@ -7,27 +7,27 @@ const Schema = mongoose.Schema;
  * Schema do histórico do item
  */
 const HistoricoSchema = new Schema({
-  operacao: Number
-, status: Number
+  operacao: String
+, status: String
 , quantidade: { type: Number, default: 0 }
 , criado_em: { type: Date, default: Date.now }
-})
+});
 
 /**
  * Schema do item
  */
 const ItemSchema = new Schema({
-  tipo: Boolean
-, descricao: { type: String, trim: true }
-, comentario: { type: String, trim: true }
+  tipo: String
+, descricao: String
+, comentario: String
 , quantidade: { type: Number, default: 0 }
 , criado_em: { type: Date, default: Date.now }
 , historico: [HistoricoSchema]
 });
 
 /**
- * Cria o model do item
+ * Model do item
  */
-const ItemModel = mongoose.model('items', ItemSchema);
+const ItemModel = mongoose.model('Item', ItemSchema);
 
 module.exports = () => ItemModel;

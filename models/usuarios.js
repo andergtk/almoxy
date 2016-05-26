@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
  * Schema dos telefones do usuário
  */
 const TelefoneSchema = new Schema({
-  tipo: { type: String, trim: true }
+  tipo: String
 , numero: Number
 });
 
@@ -15,16 +15,16 @@ const TelefoneSchema = new Schema({
  * Schema do usuário
  */
 const UsuarioSchema = new Schema({
-  nome: { type: String, trim: true }
-, email: { type: String, trim: true }
-, senha: { type: String, trim: true }
-, funcao: { type: String, trim: true }
+  nome: String
+, email: String
+, senha: String
+, funcao: String
 , telefones: [TelefoneSchema]
 });
 
 /**
- * Cria o model do usuário
+ * Model do usuário
  */
-const UsuarioModel = mongoose.model('usuarios', UsuarioSchema);
+const UsuarioModel = mongoose.model('Usuario', UsuarioSchema);
 
 module.exports = () => UsuarioModel;
