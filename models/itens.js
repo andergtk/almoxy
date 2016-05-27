@@ -30,4 +30,4 @@ const ItemSchema = new Schema({
  */
 const ItemModel = mongoose.model('Item', ItemSchema);
 
-module.exports = () => ItemModel;
+module.exports = ItemModel;

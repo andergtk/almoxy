@@ -4,15 +4,16 @@ const express      = require('express');
 const session      = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser   = require('body-parser');
-const consign      = require('consign');
 const flash        = require('express-flash');
 const path         = require('path');
 const config       = require('./config');
 const db           = require('./db')(config.dbUri);
 
 const autenticacao = require('./middlewares/autenticacao');
-const validacao    = require('./middlewares/validacao');
-const erros        = require('./middlewares/erros');
+
+const rotas    = require('./routes/index');
+const itens    = require('./routes/itens');
+const usuarios = require('./routes/usuarios');
 
 const app = express();
 
@@ -23,7 +24,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 /**
- * Define o diretório com os arquivos estáticos
+ * Diretório dos arquivos estáticos
  */
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -35,7 +36,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser(config.cookieSecret));
 app.use(session({
   resave: true
-, saveUninitialized: false
+, maxAge: 1800000
+, saveUninitialized: true
 , secret: config.sessionSecret
 }));
 app.use(flash());
@@ -44,25 +46,36 @@ app.use(flash());
  * Middlewares do projeto
  */
 app.use(autenticacao);
-app.post(/^\/item/, validacao.item);
-app.post(/^\/usuario/, validacao.usuario);
 
 /**
- * Models
- * Controllers
  * Rotas
  */
-consign({ locale: 'pt-br' })
-  .include('./models')
-  .then('./controllers')
-  .then('./routes')
-  .into(app);
+app.use(rotas);
+app.use(itens);
+app.use(usuarios);
 
 /**
- * Tratamento dos erros
+ * Tratamento de erros
  */
-app.use(erros.e404);
-app.use(erros.mensagem);
+
+// Lança erro 404 e toca em frente
+app.use((req, res, next) => {
+  let err = new Error('Não encontrado');
+
+  err.status = 404;
+  next(err);
+});
+
+// Capitura os eros e renderiza a página
+app.use((err, req, res, next) => {
+  const defaultStatus = 500;
+
+  res.status(err.status || defaultStatus);
+  res.render('erro', {
+      titulo: err.status || defaultStatus
+    , mensagem: err.message
+    });
+});
 
 app.listen(config.port, () => {
   console.log(`[Servidor] Rodando na porta ${config.port}`);

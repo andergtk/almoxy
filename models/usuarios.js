@@ -19,6 +19,7 @@ const UsuarioSchema = new Schema({
 , email: String
 , senha: String
 , funcao: String
+, permissoes: [String]
 , telefones: [TelefoneSchema]
 , data: { type: Date, default: Date.now }
 });
@@ -28,4 +29,4 @@ const UsuarioSchema = new Schema({
  */
 const UsuarioModel = mongoose.model('Usuario', UsuarioSchema);
 
-module.exports = () => UsuarioModel;
+module.exports = UsuarioModel;

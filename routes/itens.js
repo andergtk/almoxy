@@ -1,22 +1,25 @@
 'use strict';
 
-module.exports = (app) => {
-  const itensController = app.controllers.itens;
+const express = require('express');
+const router  = express.Router();
 
-  // Criar item
-  app.route('/item/criar')
-    .get(itensController.form)
-    .post(itensController.criar);
+const controller = require('./../controllers/itens');
 
-  // Informações do item
-  app.route('/item/info/:id')
-    .get(itensController.info);
+// Criar item
+router.route('/item/criar')
+  .get(controller.form)
+  .post(controller.criar);
 
-  // Editar item
-  app.route('/item/editar')
-    .post(itensController.editar);
+// Informações do item
+router.route('/item/info/:id')
+  .get(controller.info);
 
-  // Excluir item
-  app.route('/item/excluir')
-    .post(itensController.excluir);
-}
+// Editar item
+router.route('/item/editar')
+  .post(controller.editar);
+
+// Excluir item
+router.route('/item/excluir')
+  .post(controller.excluir);
+
+module.exports = router;

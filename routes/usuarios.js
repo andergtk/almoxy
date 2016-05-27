@@ -1,26 +1,29 @@
 'use strict';
 
-module.exports = (app) => {
-  const usuariosController = app.controllers.usuarios;
+const express = require('express');
+const router  = express.Router();
 
-  // Perfil do usuário
-  app.route('/usuario')
-    .get(usuariosController.perfil);
+const controller = require('./../controllers/usuarios');
 
-  // Criar usuário
-  app.route('/usuario/criar')
-    .get(usuariosController.form)
-    .post(usuariosController.criar);
+// Perfil do usuário
+router.route('/usuario')
+  .get(controller.perfil);
 
-  // Informações do usuário
-  app.route('/usuario/info/:id')
-    .get(usuariosController.info);
+// Criar usuário
+router.route('/cadastrar')
+  .get(controller.form)
+  .post(controller.criar);
 
-  // Editar usuário
-  app.route('/usuario/editar')
-    .post(usuariosController.editar);
+// Informações do usuário
+router.route('/usuario/info/:id')
+  .get(controller.info);
 
-  // Excluir usuário
-  app.route('/usuario/excluir')
-    .post(usuariosController.excluir);
-}
+// Editar usuário
+router.route('/usuario/editar')
+  .post(controller.editar);
+
+// Excluir usuário
+router.route('/usuario/excluir')
+  .post(controller.excluir);
+
+module.exports = router;
