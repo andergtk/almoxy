@@ -1,12 +1,32 @@
 /**
- * Modifica a aparência padrão do Bootstrap
+ * Container
  */
 .container { max-width: 900px; }
+
+/**
+ * Icons
+ */
+.alert .octicon:first-child {
+  margin: 0.05em .4em 0 0;
+  font-size: 1.3em;
+}
+
+/**
+ * Navbar
+ */
 .navbar-brand {
   font-weight: bold;
   line-height: 1.3;
 }
+
+/**
+ * Card
+ */
 .card-header h4 { margin: 0.3em 0; }
+
+/**
+ * Table
+ */
 .table { margin-bottom: 0; }
 .table tbody tr { cursor: pointer; }
 .table tbody td.item-descricao { color: #0275d8; }
