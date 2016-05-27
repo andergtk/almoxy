@@ -1,13 +1,21 @@
-<% if (messages.erro) { %>
-	<div class="alert alert-danger">
-		<strong><%= messages.erro %></strong>
-	</div>
-<% } if (messages.info) { %>
-	<div class="alert alert-info">
-		<strong><%= messages.info %></strong>
-	</div>
-<% } if (messages.success) { %>
-	<div class="alert alert-success">
-		<strong><%= messages.success %></strong>
-	</div>
+<% if (typeof messages !== undefined) { %>
+	<% if (messages.error) { %>
+		<div class="alert alert-danger alert-dismissible fade in">
+			<span class="octicon octicon-x pull-xs-left"></span>
+			<strong><%= messages.error %></strong>
+			<button class="close" type="button" data-dismiss="alert">&times;</button>
+		</div>
+	<% } if (messages.info) { %>
+		<div class="alert alert-info alert-dismissible fade in">
+			<span class="octicon octicon-info"></span>
+			<strong><%= messages.info %></strong>
+			<button class="close" type="button" data-dismiss="alert">&times;</button>
+		</div>
+	<% } if (messages.success) { %>
+		<div class="alert alert-success alert-dismissible fade in">
+			<span class="octicon octicon-check"></span>
+			<strong><%= messages.success %></strong>
+			<button class="close" type="button" data-dismiss="alert">&times;</button>
+		</div>
+	<% } %>
 <% } %>

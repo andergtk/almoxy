@@ -10,7 +10,7 @@
 						</div>
 					</div>
 				</div>
-				<% if (itensAlmoxarifado.length < 1) { %>
+				<% if (typeof itens === undefined || itens.length < 1) { %>
 					<div class="card-block">
 						<p>Nenhum registro encontrado</p>
 					</div>
@@ -18,17 +18,15 @@
 					<table class="table table-bordered table-hover">
 						<thead>
 							<tr>
-								<th style="width: 50px; text-align: center;"><input type="checkbox"></th>
 								<th>Descrição</th>
 								<th style="width: 100px; text-align: center;">Quantidade</th>
 								<th style="width: 120px; text-align: center;">Ações</th>
 							</tr>
 						</thead>
 						<tbody>
-							<% itensAlmoxarifado.forEach(function(item) { %>
+							<% itens.forEach(function(item) { %>
 								<tr data-item-id="<%= item.id %>">
-									<td style="text-align: center;"><input type="checkbox"></td>
-									<td class="item-descricao"><%= item.descricao %></td>
+									<td><%= item.descricao %></td>
 									<td style="text-align: right;"><%= item.quantidade %></td>
 									<td style="text-align: center;">
 										<button class="btn btn-secondary btn-sm item-editar">
@@ -44,7 +42,7 @@
 					</table>
 				<% } %>
 			</div><!-- .card -->
-		</div>
+		</div><!-- .col-md-12 -->
 	</div><!-- .row -->
 	<% include item/modal-info %>
 	<% include item/modal-editar %>

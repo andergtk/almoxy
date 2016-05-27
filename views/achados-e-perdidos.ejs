@@ -10,7 +10,7 @@
 						</div>
 					</div>
 				</div>
-				<% if (itensAchadosEPerdidos.length < 1) { %>
+				<% if (typeof itens === undefined || itens.length < 1) { %>
 					<div class="card-block">
 						<p>Nenhum registro encontrado</p>
 					</div>
@@ -18,7 +18,6 @@
 					<table class="table table-bordered table-hover">
 						<thead>
 							<tr>
-								<th style="width: 50px; text-align: center;"><input type="checkbox"></th>
 								<th>Descrição</th>
 								<th style="width: 220px;">Comentário</th>
 								<th style="width: 120px; text-align: center;">Data</th>
@@ -26,12 +25,11 @@
 							</tr>
 						</thead>
 						<tbody>
-							<% itensAchadosEPerdidos.forEach(function(item) { %>
+							<% itens.forEach(function(item) { %>
 								<tr data-item-id="<%= item.id %>">
-									<td style="text-align: center;"><input type="checkbox"></td>
-									<td class="item-descricao"><%= item.descricao %></td>
+									<td><%= item.descricao %></td>
 									<td><%= item.comentario %></td>
-									<td style="text-align: center;"><%= moment(item.criado_em).format('DD/MM/Y') %></td>
+									<td style="text-align: center;"><%= moment(item.data).format('DD/MM/Y') %></td>
 									<td style="text-align: center;">
 										<button class="btn btn-secondary btn-sm item-editar">
 											<span class="octicon octicon-pencil"></span>
@@ -41,12 +39,12 @@
 										</button>
 									</td>
 								</tr>
-							<% }) %>
+							<% }); %>
 						</tbody>
 					</table>
 				<% } %>
 			</div><!-- .card -->
-		</div>
+		</div><!-- .col-md-12 -->
 	</div><!-- .row -->
 	<% include item/modal-info %>
 	<% include item/modal-editar %>
