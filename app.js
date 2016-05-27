@@ -66,7 +66,7 @@ app.use((req, res, next) => {
   next(err);
 });
 
-// Capitura os eros e renderiza a página
+// Capitura os erros e renderiza a página
 app.use((err, req, res, next) => {
   const defaultStatus = 500;
 
