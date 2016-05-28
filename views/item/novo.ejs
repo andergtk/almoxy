@@ -3,30 +3,31 @@
 		<div class="col-md-12">
 			<div class="card">
 				<h5 class="card-header">Novo item</h5>
-				<form action="/item" method="post">
+				<form action="/item/novo" method="post">
+					<input type="hidden" name="referer" value="<%= referer %>">
 					<div class="card-block">
 						<div class="btn-group" data-toggle="buttons">
 							<p>Tipo</p>
-							<label class="btn btn-secondary <%= (opcao === 1) ? 'active' : '' %>">
-								<input name="item[tipo]" type="radio" value="0" <%= (opcao === 1) ? 'check' : '' %>>
+							<label class="btn btn-secondary <%= ('almoxarifado' === opcao) ? 'active' : '' %>">
+								<input name="tipo" type="radio" value="almoxarifado" <%= ('almoxarifado' === opcao) ? 'checked="checked"' : '' %>>
 								Almoxarifado
 							</label>
-							<label class="btn btn-secondary <%= (opcao === 2) ? 'active' : '' %>">
-								<input name="item[tipo]" type="radio" value="1" <%= (opcao === 2) ? 'check' : '' %>>
+							<label class="btn btn-secondary <%= ('achados-e-perdidos' === opcao) ? 'active' : '' %>">
+								<input name="tipo" type="radio" value="achados-e-perdidos" <%= ('achados-e-perdidos' === opcao) ? 'checked="checked"' : '' %>>
 								Achados e perdidos
 							</label>
 						</div>
 						<fieldset class="form-group">
 							<label for="novo-item-descricao">Descrição</label>
-							<input id="novo-item-descricao" class="form-control" name="item[descricao]" type="text">
+							<input id="novo-item-descricao" class="form-control" name="descricao" type="text">
 						</fieldset>
 						<fieldset class="form-group">
 							<label for="novo-item-comentario">Comentário</label>
-							<textarea id="novo-item-comentario" class="form-control" name="item[comentario]" rows="3"></textarea>
+							<textarea id="novo-item-comentario" class="form-control" name="comentario" rows="3"></textarea>
 						</fieldset>
 						<fieldset class="form-group">
 							<label for="novo-item-quantidade">Quantidade</label>
-							<input id="novo-item-quantidade" class="form-control" name="item[quantidade]" type="number" value="0">
+							<input id="novo-item-quantidade" class="form-control" name="quantidade" type="number" value="0">
 						</fieldset>
 					</div>
 					<div class="card-footer">

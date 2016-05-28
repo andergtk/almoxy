@@ -4,24 +4,54 @@ const Itens = require('./../models/itens');
 
 exports.form = (req, res) => {
   let opcao;
+  let referer;
 
-  if (req.header('Referer').match(/\/achados-e-perdidos/)) {
-    opcao = 2
+  if (req.header('Referer')) {
+    referer = req.header('Referer');
   } else {
-    opcao = 1
+    referer = '/';
   }
 
-  res.render('item/criar', {
-    titulo: 'Criar item'
+  if (referer.match(/\/achados-e-perdidos/)) {
+    opcao = 'achados-e-perdidos';
+  } else {
+    opcao = 'almoxarifado';
+  }
+
+  res.render('item/novo', {
+    titulo: 'Novo item'
+  , referer
   , opcao
   });
 }
 
-exports.criar = (req, res) => {
-  const referer = req.header('Referer');
+exports.salvar = (req, res) => {
+  const item = new Itens();
+  let link;
 
-  res.send('Criar item', {
-    referer // colocar em um input hidden no formulario para ser usado como retorno depois do item criado
+  const novoItem = {
+    tipo: req.body.tipo
+  , descricao: req.body.descricao
+  , comentario: req.body.comentario
+  , quantidade: req.body.quantidade
+  };
+
+  Object.assign(item, novoItem);
+
+  if (req.body.tipo && 'achados-e-perdidos' === req.body.tipo) {
+    link = '/achados-e-perdidos';
+  } else {
+    link = '/';
+  }
+
+  item.save((err) => {
+    if (err) {
+      req.flash('error', 'Falha ao cadastrar item');
+      res.redirect(link);
+    } else {
+      req.flash('success', 'Item cadastrado com sucesso');
+      res.redirect(link);
+    }
   });
 }
 
@@ -38,9 +68,21 @@ exports.editar = (req, res) => {
 }
 
 exports.excluir = (req, res) => {
-  itens.findOneAndRemove({ _id: req.body.id }, (err, data)  => {
-    if (err) res.send(err);
-    req.flash('info', 'Item removido com sucesso.');
-    res.redirect('/');
+  let referer;
+
+  if (req.header('Referer')) {
+    referer = req.header('Referer');
+  } else {
+    referer = '/';
+  }
+
+  Itens.findOneAndRemove({ _id: req.body.id }, (err, data)  => {
+    if (err) {
+      req.flash('error', 'Falha ao remover item: ' + err);
+      res.redirect(referer);
+    } else {
+      req.flash('info', 'Item removido com sucesso');
+      res.redirect(referer);
+    }
   });
 }

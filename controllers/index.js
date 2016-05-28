@@ -3,7 +3,7 @@
 const Itens = require('./../models/itens');
 
 exports.index = (req, res) => {
-  Itens.find({ tipo: false })
+  Itens.find({ tipo: 'almoxarifado' })
     .sort({ criado_em: 'desc' })
     .exec((err, itens) => {
       if (err) {
@@ -19,7 +19,7 @@ exports.index = (req, res) => {
 }
 
 exports.achadosEPerdidos = (req, res) => {
-  Itens.find({ tipo: true })
+  Itens.find({ tipo: 'achados-e-perdidos' })
     .sort({ criado_em: 'desc' })
     .exec((err, itens) => {
       if (err) {

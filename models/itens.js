@@ -17,7 +17,7 @@ const HistoricoSchema = new Schema({
  * Schema do item
  */
 const ItemSchema = new Schema({
-  tipo: String
+  tipo: { type: String, default: 'almoxarifado' }
 , descricao: String
 , comentario: String
 , quantidade: { type: Number, default: 0 }
@@ -28,6 +28,6 @@ const ItemSchema = new Schema({
 /**
  * Model do item
  */
-const ItemModel = mongoose.model('Item', ItemSchema);
+const ItemModel = mongoose.model('itens', ItemSchema);
 
 module.exports = ItemModel;
