@@ -18,11 +18,11 @@ $(document).ready(function() {
 
   // Editar item
   $('.item-editar').on('click', function(e) {
-    e.stopPropagation();
-
     var itemId = $(this)
       .closest('tr')
         .attr('data-item-id');
+
+    e.stopPropagation();
 
     $('#modal-item-editar').modal()
       .on('shown.bs.modal', function() {
@@ -34,15 +34,12 @@ $(document).ready(function() {
 
   // Excluir item
   $('.item-excluir').on('click', function(e) {
-    e.stopPropagation();
-
     var itemId = $(this)
       .closest('tr')
         .attr('data-item-id');
-    var itemDescricao = $(this)
-      .closest('tr')
-      .find('.item-descricao')
-        .text();
+    var itemDescricao = 'Item 007';
+
+    e.stopPropagation();
 
     $('#modal-item-excluir .item-descricao').text('"' + itemDescricao + '"');
     $('#modal-item-excluir').modal()
