@@ -1,0 +1,17 @@
+<tr class="item-info" data-item-id="<%= item.id %>">
+	<td><%= item.descricao %></td>
+	<% if ('achados-e-perdidos' === item.tipo) { %>
+		<td><%= item.comentario %></td>
+		<td style="text-align: center;"><%= moment(item.data).format('DD/MM/Y') %></td>
+	<% } else { %>
+		<td><%= item.quantidade %></td>
+	<% } %>
+	<td style="text-align: center;">
+		<button class="btn btn-secondary btn-sm item-editar">
+			<span class="octicon octicon-pencil"></span>
+		</button>
+		<button class="btn btn-secondary btn-sm item-excluir">
+			<span class="octicon octicon-trashcan"></span>
+		</button>
+	</td>
+</tr>
