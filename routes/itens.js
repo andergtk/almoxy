@@ -5,10 +5,10 @@ const router  = express.Router();
 
 const controller = require('./../controllers/itens');
 
-// Criar item
-router.route('/item/criar')
+// Novo item
+router.route('/item/novo')
   .get(controller.form)
-  .post(controller.criar);
+  .post(controller.salvar);
 
 // Informações do item
 router.route('/item/info/:id')
