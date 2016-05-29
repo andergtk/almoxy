@@ -3,86 +3,127 @@
 const Itens = require('./../models/itens');
 
 exports.form = (req, res) => {
-  let opcao;
-  let referer;
+  const retornar = (undefined !== req.header('Referer'))
+    ? req.header('Referer')
+    : '/';
 
-  if (req.header('Referer')) {
-    referer = req.header('Referer');
-  } else {
-    referer = '/';
-  }
-
-  if (referer.match(/\/achados-e-perdidos/)) {
-    opcao = 'achados-e-perdidos';
-  } else {
-    opcao = 'almoxarifado';
-  }
+  const opcaoDefault = (retornar.match(/\/achados-e-perdidos/))
+    ? 'achados-e-perdidos'
+    : 'almoxarifado';
 
   res.render('item/novo', {
     titulo: 'Novo item'
-  , referer
-  , opcao
+  , retornar
+  , opcao: opcaoDefault
   });
 }
 
 exports.salvar = (req, res) => {
-  const item = new Itens();
-  let link;
-
-  const novoItem = {
-    tipo: req.body.tipo
-  , descricao: req.body.descricao
+  const item = new Itens({
+    tipo      : req.body.tipo
+  , descricao : req.body.descricao
   , comentario: req.body.comentario
   , quantidade: req.body.quantidade
-  };
+  });
 
-  Object.assign(item, novoItem);
-
-  if (req.body.tipo && 'achados-e-perdidos' === req.body.tipo) {
-    link = '/achados-e-perdidos';
-  } else {
-    link = '/';
-  }
+  const retornar = (undefined !== req.body.tipo && 'achados-e-perdidos' === req.body.tipo)
+    ? '/achados-e-perdidos'
+    : '/';
 
   item.save((err) => {
     if (err) {
-      req.flash('error', 'Falha ao cadastrar item');
-      res.redirect(link);
+      req.flash('error', 'Falha ao cadastrar item: ' + err);
+      res.redirect(retornar);
     } else {
       req.flash('success', 'Item cadastrado com sucesso');
-      res.redirect(link);
+      res.redirect(retornar);
     }
   });
 }
 
-exports.info = (req, res) => {
-  // Testar se req.get('Content-Type') é json ou html
-  // se json retorna json
-  // se html renderiza a pagina do item
-  res.json({ descricao: 'Informações do item', quantidade: 123 });
+exports.info = (req, res, next) => {
+  const moment  = require('moment');
+  const accepts = req.accepts(['json', 'html']);
+
+  moment.locale('pt-br');
+
+  switch (accepts) {
+    case 'json':
+      Itens.findOne({ _id: req.params.id })
+        .exec((err, item) => {
+          if (err) {
+            res.json({ erro: 'Falha ao buscar informações do item:\n' + err });
+          } else {
+            if (item.length) {
+              const id = item._id;
+              delete item._id;
+
+              res.json({
+                id
+              , tipo: item.tipo
+              , descricao: item.descricao
+              , comentario: item.comentario
+              , quantidade: item.quantidade
+              , data: moment(item.data).format('LLL')
+              });
+            } else {
+              res.json({
+                code: 14
+              , mensagem: 'Nenhum registro encontrado'
+              });
+            }
+          }
+        });
+      break;
+
+    case 'html':
+      Itens.findOne({ _id: req.params.id })
+        .exec((err, item) => {
+          if (err) {
+            next(err);
+          } else {
+            const id = item._id;
+            delete item._id;
+
+            res.render('item/info', {
+                titulo: 'Informações do item'
+              , id
+              , tipo: item.tipo
+              , descricao: item.descricao
+              , comentario: item.comentario
+              , quantidade: item.quantidade
+              , data: moment(item.data).format('LLL')
+            });
+          }
+        });
+      break;
+
+    default:
+      res.status(405);
+      res.send('Método da requisição não aceito');
+  }
 }
 
 exports.editar = (req, res) => {
-  // Redirect para a página do req.header('Referer');
-  res.send({ descricao: 'Editar item', quantidade: 123 });
+  const retornar = (undefined !== req.header('Referer'))
+  ? req.header('Referer')
+  : '/';
+
+  res.redirect(retornar);
 }
 
 exports.excluir = (req, res) => {
-  let referer;
-
-  if (req.header('Referer')) {
-    referer = req.header('Referer');
-  } else {
-    referer = '/';
-  }
+  const retornar = (undefined !== req.header('Referer'))
+    ? req.header('Referer')
+    : '/';
 
   Itens.findOneAndRemove({ _id: req.body.id }, (err, data)  => {
     if (err) {
-      req.flash('error', 'Falha ao remover item: ' + err);
-      res.redirect(referer);
+      req.flash('error', 'Falha ao remover item:\n' + err);
+      res.redirect(retornar);
     } else {
       req.flash('info', 'Item removido com sucesso');
-      res.redirect(referer);
+      res.redirect(retornar);
     }
   });
 }
