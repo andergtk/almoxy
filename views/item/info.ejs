@@ -1,0 +1,51 @@
+<% include ../templates/header %>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card" data-item-id="<%= id %>">
+				<div class="card-header">
+					<div class="row">
+						<div class="col-md-8">
+							<h4>Informações do item</h4>
+						</div>
+						<div class="col-md-2">
+							<button class="btn btn-secondary btn-block item-editar">
+								<span class="octicon octicon-pencil"></span>
+								Editar
+							</button>
+						</div>
+						<div class="col-md-2">
+							<button class="btn btn-secondary btn-block item-excluir">
+								<span class="octicon octicon-trashcan"></span>
+								Excluir
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="card-block">
+					<div class="row">
+						<div class="col-md-12">
+							<% if ('achados-e-perdidos' === tipo) { %>
+								<p class="text-muted">Achados e perdidos</p>
+							<% } else if ('almoxarifado' === tipo) { %>
+								<p class="text-muted">Almoxarifado</p>
+							<% } %>
+							<h4><%= descricao %></h4>
+							<p><%= comentario %></p>
+						</div>
+						<div class="col-md-12">
+							<small><strong class="text-muted">QUANTD:</strong></small>
+							<strong><%= quantidade %></strong>
+							&nbsp;
+							&nbsp;
+							&nbsp;
+							<small><strong class="text-muted">DATA:</strong></small>
+							<%= data %>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div><!-- .row -->
+	<% include ../item/modal-editar %>
+	<% include ../item/modal-excluir %>
+<% include ../templates/footer %>
