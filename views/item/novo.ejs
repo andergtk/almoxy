@@ -1,11 +1,11 @@
-<% include ../templates/cabecalho %>
+<% include ../templates/header %>
 	<div class="row">
 		<div class="col-md-12">
 			<div class="card">
-				<h5 class="card-header">Novo item</h5>
-				<form action="/item/novo" method="post">
-					<input type="hidden" name="referer" value="<%= referer %>">
-					<div class="card-block">
+				<h4 class="card-header">Novo item</h4>
+				<div class="card-block">
+					<form action="/item/novo" method="post">
+						<input type="hidden" name="referer" value="<%= referer %>">
 						<div class="btn-group" data-toggle="buttons">
 							<p>Tipo</p>
 							<label class="btn btn-secondary <%= ('almoxarifado' === opcao) ? 'active' : '' %>">
@@ -29,12 +29,11 @@
 							<label for="novo-item-quantidade">Quantidade</label>
 							<input id="novo-item-quantidade" class="form-control" name="quantidade" type="number" value="0">
 						</fieldset>
-					</div>
-					<div class="card-footer">
+						<br>
 						<button class="btn btn-success" type="submit">Cadastrar</button>
-					</div>
-				</form>
+					</form>
+				</div><!-- .card-block -->
 			</div><!-- novo item -->
 		</div>
 	</div>
-<% include ../templates/rodape %>
+<% include ../templates/footer %>
