@@ -1,28 +1,18 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-
-/**
- * Schema do histórico do item
- */
-const HistoricoSchema = new Schema({
-  operacao: String
-, status: String
-, quantidade: { type: Number, default: 0 }
-, data: { type: Date, default: Date.now }
-});
+const Schema   = mongoose.Schema;
 
 /**
  * Schema do item
  */
 const ItemSchema = new Schema({
-  tipo: { type: String, default: 'almoxarifado' }
-, descricao: String
+  tipo      : require('./item-schema-types/tipo')
+, status    : require('./item-schema-types/status')
+, descricao : require('./item-schema-types/descricao')
 , comentario: String
-, quantidade: { type: Number, default: 0 }
-, data: { type: Date, default: Date.now }
-, historico: [HistoricoSchema]
+, quantidade: require('./item-schema-types/quantidade')
+, data      : require('./item-schema-types/data')
 });
 
 /**
