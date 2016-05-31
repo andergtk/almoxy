@@ -1,129 +1,155 @@
 'use strict';
 
-const Itens = require('./../models/itens');
+const Items = require('../models/item/index');
 
+/**
+ * GET Formulário para adicionar item
+ */
 exports.form = (req, res) => {
-  const retornar = (undefined !== req.header('Referer'))
-    ? req.header('Referer')
-    : '/';
+  const item = req.flash('item')[0] || {};
 
-  const opcaoDefault = (retornar.match(/\/achados-e-perdidos/))
-    ? 'achados-e-perdidos'
-    : 'almoxarifado';
-
-  res.render('item/novo', {
-    titulo: 'Novo item'
-  , retornar
-  , opcao: opcaoDefault
+  res.render('item/add', {
+    title: 'Adicionar item'
+  , item
   });
 }
 
-exports.salvar = (req, res) => {
-  const item = new Itens({
-    tipo      : req.body.tipo
-  , descricao : req.body.descricao
-  , comentario: req.body.comentario
-  , quantidade: req.body.quantidade
-  });
+/**
+ * POST Salva item no banco de dados
+ */
+exports.create = (req, res) => {
+  const body = req.body;
 
-  const retornar = (undefined !== req.body.tipo && 'achados-e-perdidos' === req.body.tipo)
-    ? '/achados-e-perdidos'
-    : '/';
+  if ('almoxarifado' === body.type) {
+    delete body.status;
+  }
+
+  const item = new Items(body);
 
   item.save((err) => {
     if (err) {
-      req.flash('error', 'Falha ao cadastrar item: ' + err);
-      res.redirect(retornar);
+      req.flash('error', 'Erro ao salvar o item');
+      req.flash('db', err);
+      req.flash('item', body);
+      res.redirect('/item/novo');
     } else {
       req.flash('success', 'Item cadastrado com sucesso');
-      res.redirect(retornar);
+      res.redirect('/');
     }
   });
 }
 
-exports.info = (req, res, next) => {
-  const moment  = require('moment');
-  const accepts = req.accepts(['json', 'html']);
+/**
+ * GET Informações do item
+ */
+exports.info = (req, res) => {
+  req.sanitize('id').escape();
 
+  const moment = require('moment');
   moment.locale('pt-br');
 
-  switch (accepts) {
-    case 'json':
-      Itens.findOne({ _id: req.params.id })
-        .exec((err, item) => {
-          if (err) {
-            res.json({ erro: 'Falha ao buscar informações do item:\n' + err });
-          } else {
-            if (item.length) {
-              const id = item._id;
-              delete item._id;
-
-              res.json({
-                id
-              , tipo: item.tipo
-              , descricao: item.descricao
-              , comentario: item.comentario
-              , quantidade: item.quantidade
-              , data: moment(item.data).format('LLL')
-              });
-            } else {
-              res.json({
-                code: 14
-              , mensagem: 'Nenhum registro encontrado'
-              });
-            }
-          }
-        });
-      break;
-
-    case 'html':
-      Itens.findOne({ _id: req.params.id })
-        .exec((err, item) => {
-          if (err) {
-            next(err);
-          } else {
-            const id = item._id;
-            delete item._id;
-
-            res.render('item/info', {
-                titulo: 'Informações do item'
-              , id
-              , tipo: item.tipo
-              , descricao: item.descricao
-              , comentario: item.comentario
-              , quantidade: item.quantidade
-              , data: moment(item.data).format('LLL')
-            });
-          }
-        });
-      break;
-
-    default:
-      res.status(405);
-      res.send('Método da requisição não aceito');
-  }
-}
-
-exports.editar = (req, res) => {
-  const retornar = (undefined !== req.header('Referer'))
-  ? req.header('Referer')
-  : '/';
-
-  res.redirect(retornar);
-}
-
-exports.excluir = (req, res) => {
-  const retornar = (undefined !== req.header('Referer'))
-    ? req.header('Referer')
-    : '/';
-
-  Itens.findOneAndRemove({ _id: req.body.id }, (err, data)  => {
+  Items.findOne({ _id: req.params.id }, (err, item) => {
     if (err) {
-      req.flash('error', 'Falha ao remover item:\n' + err);
-      res.redirect(retornar);
+      req.flash('error', 'Erro ao buscar as informações do item')
+      req.flash('error.db', err);
+      res.redirect('/');
     } else {
-      req.flash('info', 'Item removido com sucesso');
-      res.redirect(retornar);
+      const hasItems = !! item._id;
+      let title;
+
+      console.log(item._id);
+      console.log(hasItems);
+
+      if (hasItems) {
+        title = item.description;
+        item.id = item._id;
+        item.date = moment(item.date).format('LLL');
+      } else {
+        title = 'Nenhum item encontrado';
+      }
+
+      res.render('item/info', {
+          title
+        , hasItems
+        , item
+      });
+    }
+  });
+}
+
+/**
+ * GET Formulário para editar item
+ */
+exports.edit = (req, res) => {
+  Items.findOne({ _id: req.params.id }, (err, item) => {
+    if (err) {
+      req.flash('error', 'Erro ao buscar o item para editar');
+      req.flash('error.db', err);
+      req.redirect('/');
+    } else {
+      const hasItems = !! item._id;
+      let title;
+
+      if (hasItems) {
+        title = 'Editar item';
+      } else {
+        title = 'Nenhum item encontrado'
+      }
+
+      res.render('item/edit', {
+        title
+      , hasItems
+      , item
+      });
+    }
+  });
+}
+
+/**
+ * POST Atualiza item no banco de dados
+ */
+exports.update = (req, res) => {
+  const body = req.body;
+
+  if ('achados-e-perdidos' === body.type) {
+    delete body.status;
+  }
+
+  Items.findById(body.id, (err, item) => {
+    Object.assign(item, body);
+    item.save((err) => {
+      if (err) {
+        req.flash('error', 'Erro ao salvar o item');
+        req.flash('db', err);
+        res.redirect('/item/editar/' + body.id);
+      } else {
+        req.flash('success', 'Item atualizado com successo');
+        res.redirect('/');
+      }
+    });
+  });
+}
+
+/**
+ * GET Remover item
+ */
+exports.delete = (req, res) => {
+  Items.findById(req.params.id, (err, item)  => {
+    if (err) {
+      req.flash('error', 'Erro ao buscar o item a ser removido');
+      req.flash('db', err);
+      res.redirect('/');
+    } else {
+      item.remove((err, doc) => {
+        if (err) {
+          req.flash('error', 'Erro ao remover o item');
+          req.flash('db', err);
+          res.redirect('/');
+        } else {
+          req.flash('info', 'Item removido');
+          res.redirect('/');
+        }
+      });
     }
   });
 }

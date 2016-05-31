@@ -1,47 +1,40 @@
 'use strict';
 
-const Itens = require('./../models/itens');
+const Items = require('../models/item');
 
-exports.index = (req, res) => {
-  Itens.find({ tipo: 'almoxarifado' })
-    .sort({ criado_em: 'desc' })
-    .exec((err, itens) => {
+// GET Página inicial
+exports.index = (req, res, next) => {
+  Items.find({ type: 'almoxarifado' })
+    .sort({ created_at: 'desc' })
+    .exec((err, items) => {
       if (err) {
         res.status(500);
-        res.send(err);
+        next(err);
       } else {
         res.render('index', {
-          titulo: 'Página Inicial'
-        , itens
+          title: 'Página inicial'
+        , hasItems: !! items.length
+        , items
         });
       }
     });
 }
 
-exports.achadosEPerdidos = (req, res) => {
-  Itens.find({ tipo: 'achados-e-perdidos' })
-    .sort({ criado_em: 'desc' })
-    .exec((err, itens) => {
+// GET Achados e perdidos
+exports.achadosEPerdidos = (req, res, next) => {
+  Items.find({ type: 'achados-e-perdidos' })
+    .sort({ created_at: 'desc' })
+    .exec((err, items) => {
       if (err) {
         res.status(500);
-        res.send(err);
+        next(err);
       } else {
         res.render('achados-e-perdidos', {
-          titulo: 'Achados e Perdidos'
+          title: 'Achados e perdidos'
         , moment: require('moment')
-        , itens
+        , hasItems: !! items.length
+        , items
         });
       }
     });
-}
-
-exports.login = (req, res) => {
-  if ('GET' === req.method) {
-    res.render('login', {
-      titulo: 'Login'
-    , usuario: req.body.usuario
-    });
-  } else {
-    // iniciar sessão
-  }
 }
