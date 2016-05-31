@@ -29,10 +29,14 @@ exports.achadosEPerdidos = (req, res, next) => {
         res.status(500);
         next(err);
       } else {
+        const moment = require('moment');
+        moment.locale('pt-br');
+
+        if ()
         res.render('achados-e-perdidos', {
           title: 'Achados e perdidos'
-        , moment: require('moment')
         , hasItems: !! items.length
+        , moment
         , items
         });
       }
