@@ -32,7 +32,6 @@ exports.achadosEPerdidos = (req, res, next) => {
         const moment = require('moment');
         moment.locale('pt-br');
 
-        if ()
         res.render('achados-e-perdidos', {
           title: 'Achados e perdidos'
         , hasItems: !! items.length
