@@ -1,9 +1,15 @@
-<% if (typeof messages !== undefined) { %>
+<% if (messages) { %>
 	<% if (messages.error) { %>
 		<div class="alert alert-danger alert-dismissible fade in">
-			<span class="octicon octicon-x pull-xs-left"></span>
-			<strong><%= messages.error %></strong>
 			<button class="close" type="button" data-dismiss="alert">&times;</button>
+			<p><strong><%= messages.error %></strong></p>
+
+			<% if (messages.db[0].errors) { %>
+				<% for (var msg in messages.db[0].errors) { %>
+					<% if (! messages.db[0].errors.hasOwnProperty(msg)) continue; %>
+					<p>&#8226; &nbsp;<%= messages.db[0].errors[msg].message %></p>
+				<% } %>
+			<% } %>
 		</div>
 	<% } if (messages.info) { %>
 		<div class="alert alert-info alert-dismissible fade in">
