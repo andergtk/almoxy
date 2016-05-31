@@ -1,21 +1,15 @@
 'use strict';
 
-const express = require('express');
-const router  = express.Router();
+const router = require('express').Router();
 
-const controller = require('./../controllers/index');
+const mainController = require('../controllers/index');
 
 // Página inicial
 router.route('/')
-  .get(controller.index);
+  .get(mainController.index);
 
-// Achados e Perdidos
+// Achados e perdidos
 router.route('/achados-e-perdidos')
-  .get(controller.achadosEPerdidos);
-
-// Login
-router.route('/login')
-  .get(controller.login)
-  .post(controller.login);
+  .get(mainController.achadosEPerdidos);
 
 module.exports = router;

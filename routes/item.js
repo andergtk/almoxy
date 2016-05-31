@@ -1,25 +1,27 @@
 'use strict';
 
-const express = require('express');
-const router  = express.Router();
+const router = require('express').Router();
 
-const controller = require('./../controllers/itens');
+const itemController = require('../controllers/item');
 
-// Novo item
+// Adicionar item
 router.route('/item/novo')
-  .get(controller.form)
-  .post(controller.salvar);
+  .get(itemController.form)
+  .post(itemController.create);
 
 // Informações do item
 router.route('/item/info/:id')
-  .get(controller.info);
+  .get(itemController.info);
 
 // Editar item
 router.route('/item/editar')
-  .post(controller.editar);
+  .post(itemController.update);
 
-// Excluir item
-router.route('/item/excluir')
-  .post(controller.excluir);
+router.route('/item/editar/:id')
+  .get(itemController.edit);
+
+// Remover item
+router.route('/item/remover/:id')
+  .get(itemController.delete);
 
 module.exports = router;
