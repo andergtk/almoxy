@@ -1,21 +1,27 @@
 'use strict';
 
-const express      = require('express');
-const session      = require('express-session');
+// Módulos
+const express = require('express');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const bodyParser   = require('body-parser');
-const flash        = require('express-flash');
-const path         = require('path');
-const config       = require('./config');
-const db           = require('./db')(config.dbUri);
-
-const autenticacao = require('./middlewares/autenticacao');
-
-const rotas    = require('./routes/index');
-const itens    = require('./routes/itens');
-const usuarios = require('./routes/usuarios');
-
+const flash = require('express-flash');
+const path = require('path');
 const app = express();
+
+// Configurações
+const config = require('./config/index');
+const db = require('./config/db')(config.db.uri);
+
+// Middlewares
+const auth = require('./middlewares/auth');
+const error = require('./middlewares/error');
+
+// Rotas
+const main = require('./routes/index');
+const user = require('./routes/user');
+const item = require('./routes/item');
 
 /**
  * View engine
@@ -33,49 +39,35 @@ app.use(express.static(path.join(__dirname, 'public')));
  */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser(config.cookieSecret));
+app.use(cookieParser(config.secret.cookie));
 app.use(session({
-  resave: true
-, maxAge: 1800000
+  resave: false
 , saveUninitialized: true
-, secret: config.sessionSecret
+, cookie: { maxAge: 30 * 60 * 1000 }
+, secret: config.secret.session
+, store: new MongoStore({
+    url: config.db.uri
+  })
 }));
 app.use(flash());
 
 /**
- * Middlewares do projeto
+ * Autenticação do usuário
  */
-app.use(autenticacao);
+app.use(auth);
 
 /**
  * Rotas
  */
-app.use(rotas);
-app.use(itens);
-app.use(usuarios);
+app.use(main);
+app.use(user);
+app.use(item);
 
 /**
- * Tratamento de erros
+ * Erros
  */
-
-// Lança erro 404 e toca em frente
-app.use((req, res, next) => {
-  let err = new Error('Não encontrado');
-
-  err.status = 404;
-  next(err);
-});
-
-// Capitura os erros e renderiza a página
-app.use((err, req, res, next) => {
-  const defaultStatus = 500;
-
-  res.status(err.status || defaultStatus);
-  res.render('erro', {
-      titulo: err.status || defaultStatus
-    , mensagem: err.message
-    });
-});
+app.use(error.e404);
+app.use(error.errorHandler);
 
 app.listen(config.port, () => {
   console.log(`[Servidor] Rodando na porta ${config.port}`);
