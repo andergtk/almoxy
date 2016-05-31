@@ -20,7 +20,8 @@ module.exports = (uri) => {
   });
 
   mongoose.connection.on('error', (err) => {
-    console.log('[Mongoose] Falha na conexão:', err);
+    console.log('[Mongoose] Falha na conexão com o banco de dados.');
+    throw err;
   });
 
   process.on('SIGINT', () => {
