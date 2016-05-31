@@ -1,4 +1,11 @@
-<% include templates/header %>
-    <h1><%= titulo %></h1>
-    <pre><%= mensagem %></pre>
-<% include templates/footer %>
+<% include partials/header %>
+	<div class="row">
+		<div class="content-header clearfix">
+			<h4 class="col-md-12"><%= title %></h4>
+		</div><!-- .content-header -->
+
+		<div class="col-md-12">
+			<pre><%= message %></pre>
+		</div>
+	</div><!-- .row -->
+<% include partials/footer %>
