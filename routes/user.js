@@ -10,12 +10,16 @@ router.route('/usuario')
 
 // Login
 router.route('/login')
+  // Formulário
   .get(userController.login)
+
   .post(userController.login);
 
 // Cadastrar
 router.route('/cadastrar')
+  // Formulário
   .get(userController.signup)
+
   .post(userController.signup);
 
 // Informações do usuário
@@ -29,5 +33,8 @@ router.route('/usuario/editar')
 // Remover usuário
 router.route('/usuario/remover')
   .post(userController.delete);
+
+router.route('/usuario/remover/:id')
+  .get(userController.delete);
 
 module.exports = router;

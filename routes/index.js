@@ -2,7 +2,7 @@
 
 const router = require('express').Router();
 
-const mainController = require('../controllers/index');
+const mainController = require('../controllers');
 
 // Página inicial
 router.route('/')
