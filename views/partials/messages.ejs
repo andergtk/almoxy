@@ -1,27 +1,39 @@
-<% if (messages) { %>
-	<% if (messages.error) { %>
+<% if ('object' === typeof messages) { %>
+	<% if ('object' === typeof messages.error) { %>
 		<div class="alert alert-danger alert-dismissible fade in">
 			<button class="close" type="button" data-dismiss="alert">&times;</button>
-			<p><strong><%= messages.error %></strong></p>
 
-			<% if (messages.db[0].errors) { %>
-				<% for (var msg in messages.db[0].errors) { %>
-					<% if (! messages.db[0].errors.hasOwnProperty(msg)) continue; %>
-					<p>&#8226; &nbsp;<%= messages.db[0].errors[msg].message %></p>
+			<% messages.error.forEach(function(message) { %>
+				<p><strong><%- message %></strong></p>
+			<% }); %>
+
+			<% if ('[object Array]' === Object.prototype.toString.call(messages.db)) { %>
+				<% for (var key in messages.db) { %>
+					<% if (! messages.db.hasOwnProperty(key)) continue; %>
+					<% for (var field in messages.db[key].errors) { %>
+						<% if (! messages.db[key].errors.hasOwnProperty(field)) continue; %>
+						<p>&#8226; &nbsp;<%- messages.db[key].errors[field].message %></p>
+					<% } %>
 				<% } %>
 			<% } %>
 		</div>
-	<% } if (messages.info) { %>
+
+	<% } if ('object' === typeof messages.info) { %>
 		<div class="alert alert-info alert-dismissible fade in">
-			<span class="octicon octicon-info"></span>
-			<strong><%= messages.info %></strong>
 			<button class="close" type="button" data-dismiss="alert">&times;</button>
+
+			<% messages.info.forEach(function(message) { %>
+				<p><strong><%- message %></strong></p>
+			<% }) %>
 		</div>
-	<% } if (messages.success) { %>
+
+	<% } if ('object' === typeof messages.success) { %>
 		<div class="alert alert-success alert-dismissible fade in">
-			<span class="octicon octicon-check"></span>
-			<strong><%= messages.success %></strong>
 			<button class="close" type="button" data-dismiss="alert">&times;</button>
+
+			<% messages.success.forEach(function(message) { %>
+				<p><strong><%- message %></strong></p>
+			<% }) %>
 		</div>
 	<% } %>
 <% } %>
