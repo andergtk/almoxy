@@ -12,26 +12,10 @@
   border-bottom: 1px solid #e5e5e5;
 }
 
-.content-header {
-  margin-bottom: 1em;
-}
-
-/**
- * Icons
- */
-.alert .octicon:first-child {
-  margin: 0.05em .4em 0 0;
-  font-size: 1.3em;
-}
-
-/**
- * Card
- */
-.card-header h4 { margin: 0.3em 0; }
+.content-header { margin-bottom: 1em; }
 
 /**
  * Table
  */
-.table { margin-bottom: 0; }
 .table tbody tr { cursor: pointer; }
-.table tbody td.item-descricao { color: #0275d8; }
+.table tbody td.item-description { color: #0275d8; }
