@@ -2,16 +2,18 @@
 
 const enu = {
   values: [
-    ''
-  , 'Encontrado'
-  , 'Devolvido'
+    'alx_disponivel'
+  , 'alx_em_falta'
+  , 'alx_reservado'
+  , 'aep_encontrado'
+  , 'aep_devolvido'
   ]
-, message: 'Conteúdo do campo Status é inválido'
+, message: 'Valor do campo Status é inválido.'
 }
 
 module.exports = {
   type: String
-, default: ''
 , trim: true
 , enum: enu
+, required: [true, 'O campo Status é obrigatório.']
 }

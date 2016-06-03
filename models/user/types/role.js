@@ -2,10 +2,10 @@
 
 const enu = {
   values: [
-    'Administrador'
-  , 'Auxiliar'
+    'administrador'
+  , 'auxiliar'
   ]
-, message: 'Cargo de usuário inválido'
+, message: 'Valor do campo Cargo do usuário é inválido.'
 }
 
 module.exports = {

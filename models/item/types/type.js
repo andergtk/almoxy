@@ -3,13 +3,14 @@
 const enu = {
   values: [
     'almoxarifado'
-  , 'achados-e-perdidos'
+  , 'achados_e_perdidos'
   ]
-, message: 'Tipo de item inválido'
+, message: 'Valor do campo Tipo é inválido.'
 }
 
 module.exports = {
   type: String
 , trim: true
 , enum: enu
+, required: [true, 'O campo Tipo é obrigatório.']
 }

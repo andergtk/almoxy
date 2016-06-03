@@ -3,5 +3,5 @@
 module.exports = {
   type: String
 , trim: true
-, required: [true, 'Campo Descrição é obrigatório.']
+, required: [true, 'O campo Descrição é obrigatório.']
 }

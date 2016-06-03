@@ -19,7 +19,8 @@ const UserSchema = new Schema({
 , email: require('./types/email')
 , password: require('./types/password')
 , role: require('./types/role')
-, created_at: require('./types/created_at')
+, updated_at: require('./types/date')
+, created_at: require('./types/date')
 , phones: [PhoneSchema]
 });
 
