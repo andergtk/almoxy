@@ -2,6 +2,7 @@
 
 module.exports = (format) => {
   format = format || '%title% - %base%';
+  res.locals.titleBase = req.app.get('title');
 
   return (req, res, next) => {
     res.title = (title) => {
