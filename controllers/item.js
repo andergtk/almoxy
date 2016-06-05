@@ -187,6 +187,11 @@ exports.update = (req, res) => {
           return res.redirect('/');
         }
 
+        if (! item) {
+          req.flash('info', 'ID do item a ser editado não corresponde a nenhum registro');
+          return res.redirect('/');
+        }
+
         if ('undefiend' !== typeof body.status) {
           if ('achados_e_perdidos' === item.type && ! body.status.match(/^aep/)) {
             req.flash('error', 'Valor do campo Status é inválido.');
@@ -235,7 +240,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   let itemId;
 
-  if ('GET' === req.method()) {
+  if ('GET' === req.method) {
     itemId = req.params.id || null;
   } else if ('POST' === req.method()) {
     itemId = req.body.id || null;
@@ -247,15 +252,20 @@ exports.delete = (req, res) => {
       return res.redirect('/');
     }
 
-    item.remove((err, item) => {
+    Items.findOneAndRemove({ _id: itemId }, (err, item) => {
       if (err) {
         req.flash('error', 'Erro ao remover o item');
         req.flash('db', err);
-        res.redirect('/');
-      } else {
-        req.flash('info', 'Item removido');
-        res.redirect('/');
+        return res.redirect('/');
       }
+
+      if (! item) {
+        req.flash('info', 'ID do item a ser excluído não corresponde a nenhum registro');
+        return res.redirect('/');
+      }
+
+      req.flash('info', 'Item removido');
+      res.redirect('/');
     });
   });
 }
