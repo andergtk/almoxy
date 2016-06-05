@@ -66,17 +66,20 @@ exports.achadosEPerdidos = (req, res, next) => {
       const enumValues = Items.schema.path('status').enumValues;
       const status = itemHelper.statusFromEnum(enumValues);
 
-
       for (var key in items) {
         if (! items.hasOwnProperty(key)) continue;
 
         items[key].id = items[key]._id;
 
-        if (status.hasOwnProperty(items[key].status)) {
+        items[key].comment = items[key]
+          // Encurta o comentário
+          .comment.split(" ").splice(0, 10).join(" ")
+
+          // Converte quebra de linha em tag html
+          .replace(/\s*\n/g, '<br>');
+
+        if (status.hasOwnProperty(items[key].status))
           items[key].status = status[items[key].status];
-        } else {
-          items[key].status = 'Não informado';
-        }
       }
 
       res.render('achados-e-perdidos', {

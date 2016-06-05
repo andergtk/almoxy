@@ -2,7 +2,7 @@
 	<td class="item-description"><%= item.description %></td>
 
 	<% if ('achados_e_perdidos' === item.type) { %>
-		<td><%= item.comment %></td>
+		<td><p class="item-comment"><%- item.comment %></p></td>
 		<td class="text-xs-center"><%= moment(item.created_at).format('L'); %></td>
 	<% } else if ('almoxarifado' === item.type){ %>
 		<td class="text-xs-right"><%= item.amount %></td>

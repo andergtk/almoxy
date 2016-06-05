@@ -100,6 +100,9 @@ exports.info = (req, res) => {
         ? status[item.status]
         : 'Não informado';
 
+      // Converte quebra de linha em tag html
+      item.comment = item.comment.replace(/\s*\n/g, '<br>');
+
       res.title(item.description);
       res.render('item/info', {
         hasItems: true

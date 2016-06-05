@@ -19,3 +19,10 @@
  */
 .table tbody tr { cursor: pointer; }
 .table tbody td.item-description { color: #0275d8; }
+
+/**
+ * Informações do item
+ */
+.item-info .item-comment:after {
+  content: "...";
+}

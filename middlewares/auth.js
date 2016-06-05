@@ -1,9 +1,11 @@
 'use strict';
 
 /**
- * Autenticação do usuário
+ * Faz a autenticação do usuário.
  */
 module.exports = (req, res, next) => {
-  console.log('Autenticando usuário...');
+  // Testar se rota é diferente de Login e Cadastro
+  // se for, testa se usuário está logado
+  // se não estiver, redireciona para Login
   next();
 }
