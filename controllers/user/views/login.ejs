@@ -1,0 +1,30 @@
+<% include templates/header %>
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3">
+			<div class="card">
+				<div class="card-block">
+					<form action="/login" method="post">
+						<fieldset class="form-group">
+							<label for="usuario-email">E-mail</label>
+							<input id="usuario-email" class="form-control" name="email" type="text">
+						</fieldset>
+						<fieldset class="form-group">
+							<label for="usuario-senha">Senha</label>
+							<input id="usuario-senha" class="form-control" name="senha" type="password">
+						</fieldset>
+						<div class="row">
+							<div class="col-md-6">
+								<button class="btn btn-primary btn-block" type="submit">Entrar</button>
+							</div>
+							<div class="col-md-6">
+								<a class="btn btn-secondary btn-block" href="/cadastrar">Cadastrar</a>
+							</div>
+						</div>
+						<br>
+						<a href="/login/recuperar-senha">Esqueci minha senha</a>
+					</form>
+				</div>
+			</div><!-- .card -->
+		</div><!-- .col-md-6 -->
+	</div><!-- .row -->
+<% include templates/footer %>

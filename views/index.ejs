@@ -1,10 +1,7 @@
 <% include partials/header %>
 	<div class="row">
 		<div class="content-header clearfix">
-			<h4 class="col-md-9">Almoxarifado</h4>
-			<div class="col-md-3">
-				<a class="btn btn-success btn-block" href="/item/novo">Adicionar item</a>
-			</div>
+			<h4 class="col-md-12">Almoxarifado</h4>
 		</div><!-- .content-header -->
 
 		<div class="col-md-12">
@@ -16,13 +13,14 @@
 						<tr>
 							<th>Descrição</th>
 							<th style="width: 100px; text-align: center;">Quantidade</th>
+							<th style="width: 120px; text-align: center;">Status</th>
 							<th style="width: 120px; text-align: center;">Ações</th>
 						</tr>
 					</thead>
 					<tbody>
 						<% items.forEach(function(item) { %>
 							<% include item/loop %>
-						<% }) %>
+						<% }); %>
 					</tbody>
 				</table>
 			<% } %>

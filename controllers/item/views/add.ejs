@@ -1,0 +1,43 @@
+<% include ../partials/header %>
+	<div class="row">
+		<div class="content-header clearfix">
+			<h4 class="col-md-12">Adicionar item</h4>
+		</div><!-- .content-header -->
+
+		<div class="col-md-12">
+			<form action="/item/novo" method="post">
+				<div class="btn-group" data-toggle="buttons">
+					<label class="btn btn-secondary <%= ('almoxarifado' === item.type) ? 'active' : '' %>">
+						<input name="type" type="radio" value="almoxarifado" <%= ('almoxarifado' === item.type) ? 'checked="checked"' : '' %>>
+						Almoxarifado
+					</label>
+					<label class="btn btn-secondary <%= ('achados-e-perdidos' === item.type) ? 'active' : '' %>">
+						<input name="type" type="radio" value="achados-e-perdidos" <%= ('achados-e-perdidos' === item.type) ? 'checked="checked"' : '' %>>
+						Achados e perdidos
+					</label>
+				</div>
+				<fieldset class="form-group">
+					<label for="status">Status</label>
+					<select id="status" class="form-control" name="status">
+						<option value="Encontrado" <%= (item.status === 'Encontrado') ? 'selected' : '' %>>Encontrado</option>
+						<option value="Devolvido" <%= (item.status === 'Devolvido') ? 'selected' : '' %>>Devolvido</option>
+					</select>
+				</fieldset>
+				<fieldset class="form-group">
+					<label for="description">Descrição</label>
+					<input id="description" class="form-control" name="description" type="text" value="<%= item.description %>">
+				</fieldset>
+				<fieldset class="form-group">
+					<label for="comment">Comentário</label>
+					<textarea id="comment" class="form-control" name="comment" rows="3"><%= item.comment %></textarea>
+				</fieldset>
+				<fieldset class="form-group">
+					<label for="amount">Quantidade</label>
+					<input id="amount" class="form-control" name="amount" type="number" value="<%= item.amount || 0 %>" min="0">
+				</fieldset>
+				<br>
+				<button class="btn btn-success" type="submit">Cadastrar</button>
+			</form>
+		</div><!-- .col -->
+	</div><!-- .row -->
+<% include ../partials/footer %>

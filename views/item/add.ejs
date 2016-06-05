@@ -6,37 +6,57 @@
 
 		<div class="col-md-12">
 			<form action="/item/novo" method="post">
-				<div class="btn-group" data-toggle="buttons">
-					<label class="btn btn-secondary <%= ('almoxarifado' === item.type) ? 'active' : '' %>">
-						<input name="type" type="radio" value="almoxarifado" <%= ('almoxarifado' === item.type) ? 'checked="checked"' : '' %>>
-						Almoxarifado
-					</label>
-					<label class="btn btn-secondary <%= ('achados-e-perdidos' === item.type) ? 'active' : '' %>">
-						<input name="type" type="radio" value="achados-e-perdidos" <%= ('achados-e-perdidos' === item.type) ? 'checked="checked"' : '' %>>
-						Achados e perdidos
-					</label>
-				</div>
-				<fieldset class="form-group">
-					<label for="status">Status</label>
-					<select id="status" class="form-control" name="status">
-						<option value="Encontrado" <%= (item.status === 'Encontrado') ? 'selected' : '' %>>Encontrado</option>
-						<option value="Devolvido" <%= (item.status === 'Devolvido') ? 'selected' : '' %>>Devolvido</option>
-					</select>
-				</fieldset>
-				<fieldset class="form-group">
+				<div class="row">
+					<div class="col-md-12">
+						<p>Tipo</p>
+						<div class="form-group">
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-secondary btn-item-type <%= (! item.type || 'almoxarifado' === item.type) ? 'active' : '' %>">
+									<input name="type" type="radio" value="almoxarifado" <%= (! item.type || 'almoxarifado' === item.type) ? 'checked="checked"' : '' %>>
+									Almoxarifado
+								</label>
+
+								<label class="btn btn-secondary btn-item-type <%= ('achados_e_perdidos' === item.type) ? 'active' : '' %>">
+									<input name="type" type="radio" value="achados_e_perdidos" <%= ('achados_e_perdidos' === item.type) ? 'checked="checked"' : '' %>>
+									Achados e perdidos
+								</label>
+							</div><!-- .btn-group -->
+						</div><!-- .form-group -->
+					</div><!-- .col -->
+
+					<div class="col-md-6">
+						<div class="form-group">
+							<p>Status</p>
+							<select id="item-status" class="form-control" name="status" <%= ('object' !== typeof status) ? 'disabled="disabled"' : '' %>>
+								<% if ('object' === typeof status) { %>
+									<% for (var key in status) { %>
+										<% if (! status.hasOwnProperty(key)) continue; %>
+										<option value="<%= key %>" <%= (key === item.status) ? 'selected="selected"' : '' %>><%= status[key] %></option>
+									<% } %>
+								<% } %>
+							</select>
+						</div>
+					</div><!-- .col -->
+				</div><!-- .row -->
+
+				<div class="form-group">
 					<label for="description">Descrição</label>
 					<input id="description" class="form-control" name="description" type="text" value="<%= item.description %>">
-				</fieldset>
-				<fieldset class="form-group">
+				</div>
+
+				<div class="form-group">
 					<label for="comment">Comentário</label>
 					<textarea id="comment" class="form-control" name="comment" rows="3"><%= item.comment %></textarea>
-				</fieldset>
-				<fieldset class="form-group">
+				</div>
+
+				<div class="form-group">
 					<label for="amount">Quantidade</label>
-					<input id="amount" class="form-control" name="amount" type="number" value="<%= item.amount || 0 %>" min="0">
-				</fieldset>
-				<br>
-				<button class="btn btn-success" type="submit">Cadastrar</button>
+					<input id="amount" class="form-control" name="amount" type="number" value="<%= ('undefined' !== typeof item.amount) ? item.amount : 1 %>" min="0">
+				</div>
+
+				<div class="form-group">
+					<button class="btn btn-success" type="submit">Cadastrar</button>
+				</div>
 			</form>
 		</div><!-- .col -->
 	</div><!-- .row -->

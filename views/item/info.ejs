@@ -1,51 +1,85 @@
-<% include ../templates/header %>
+<% include ../partials/header %>
 	<div class="row">
-		<div class="col-md-12">
-			<div class="card" data-item-id="<%= id %>">
-				<div class="card-header">
-					<div class="row">
-						<div class="col-md-8">
-							<h4>Informações do item</h4>
-						</div>
-						<div class="col-md-2">
-							<button class="btn btn-secondary btn-block item-editar">
-								<span class="octicon octicon-pencil"></span>
-								Editar
-							</button>
-						</div>
-						<div class="col-md-2">
-							<button class="btn btn-secondary btn-block item-excluir">
-								<span class="octicon octicon-trashcan"></span>
-								Excluir
-							</button>
-						</div>
-					</div>
-				</div>
-				<div class="card-block">
-					<div class="row">
-						<div class="col-md-12">
-							<% if ('achados-e-perdidos' === tipo) { %>
-								<p class="text-muted">Achados e perdidos</p>
-							<% } else if ('almoxarifado' === tipo) { %>
-								<p class="text-muted">Almoxarifado</p>
-							<% } %>
-							<h4><%= descricao %></h4>
-							<p><%= comentario %></p>
-						</div>
-						<div class="col-md-12">
-							<small><strong class="text-muted">QUANTD:</strong></small>
-							<strong><%= quantidade %></strong>
-							&nbsp;
-							&nbsp;
-							&nbsp;
-							<small><strong class="text-muted">DATA:</strong></small>
-							<%= data %>
-						</div>
-					</div>
-				</div>
+		<div class="content-header clearfix">
+			<h4 class="col-md-8">Informações do item</h4>
+
+			<div class="col-md-2">
+				<a class="btn btn-secondary btn-block" href="/item/editar/<%= item.id %>">Editar</a>
 			</div>
+
+			<div class="col-md-2">
+				<a class="btn btn-danger-outline btn-block item-delete" href="/item/remover/<%= item.id %>">Remover</a>
+			</div>
+		</div><!-- .content-header -->
+
+		<div class="col-md-12">
+			<% if (! hasItems) { %>
+				<p class="text-muted">Nenhuma informação encontrada.</p>
+			<% } else { %>
+				<div class="row">
+					<div class="col-md-2">
+						<p>Tipo</p>
+					</div>
+					<div class="col-md-10">
+						<% if ('achados_e_perdidos' === item.type) { %>
+							<p class="text-muted">Achados e perdidos</p>
+						<% } else if ('almoxarifado' === item.type) { %>
+							<p class="text-muted">Almoxarifado</p>
+						<% } else { %>
+							<p class="text-muted">Não informado</p>
+						<% } %>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-2">
+						<p>Descriçao</p>
+					</div>
+					<div class="col-md-10">
+						<h4><%= item.description %></h4>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-2">
+						<p>Comentário</p>
+					</div>
+					<div class="col-md-10">
+						<p><%= item.comment %></p>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-2">
+						<p>Cadastrado em</p>
+					</div>
+					<div class="col-md-10">
+						<p><%= moment(item.created_at).format('LLL'); %></p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-2">
+						<p>Quantidade</p>
+					</div>
+					<div class="col-md-10">
+						<p><%= item.amount %></p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-2">
+						<p>Status</p>
+					</div>
+					<div class="col-md-10">
+						<% if ('Disponível' === item.status) { %>
+							<p class="text-success"><%= item.status %></p>
+						<% } else if ('Indisponível' === item.status) { %>
+							<p class="text-danger"><%= item.status %></p>
+						<% } else { %>
+							<p><%= item.status %></p>
+						<% } %>
+					</div>
+				</div>
+			<% } %>
 		</div>
 	</div><!-- .row -->
-	<% include ../item/modal-editar %>
-	<% include ../item/modal-excluir %>
-<% include ../templates/footer %>
+	<% include modal-delete %>
+<% include ../partials/footer %>

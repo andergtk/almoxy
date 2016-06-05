@@ -1,19 +1,27 @@
 <tr class="item-info" data-item-id="<%= item.id %>">
 	<td class="item-description"><%= item.description %></td>
-	<% if ('achados-e-perdidos' === item.type) { %>
+
+	<% if ('achados_e_perdidos' === item.type) { %>
 		<td><%= item.comment %></td>
-		<td style="text-align: center;"><%= item.status %></td>
-		<td style="text-align: center;"><%= moment(item.created_at).format('L') %></td>
-	<% } else { %>
-		<td style="text-align: center;"><%= item.status %></td>
-		<td><%= item.amount %></td>
+		<td class="text-xs-center"><%= moment(item.created_at).format('L'); %></td>
+	<% } else if ('almoxarifado' === item.type){ %>
+		<td class="text-xs-right"><%= item.amount %></td>
 	<% } %>
-	<td style="text-align: center;">
+
+	<% if ('Disponível' === item.status) { %>
+		<td class="text-xs-center text-success"><%= item.status %></td>
+	<% } else if ('Indisponível' === item.status) { %>
+		<td class="text-xs-center text-danger"><%= item.status %></td>
+	<% } else { %>
+		<td class="text-xs-center"><%= item.status %></td>
+	<% } %>
+
+	<td class="text-xs-center">
 		<a class="btn btn-secondary btn-sm item-edit" href="/item/editar/<%= item.id %>">
 			<span class="octicon octicon-pencil"></span>
 		</a>
-		<button class="btn btn-secondary btn-sm item-delete">
+		<a class="btn btn-secondary btn-sm item-delete" href="/item/remover/<%= item.id %>">
 			<span class="octicon octicon-trashcan"></span>
-		</button>
+		</a>
 	</td>
 </tr>

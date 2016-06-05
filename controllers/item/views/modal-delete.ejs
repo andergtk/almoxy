@@ -1,0 +1,22 @@
+<div class="modal fade" id="modal-item-excluir" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Excluir <span class="item-descricao"></span></h4>
+			</div>
+			<div class="modal-body">
+				<p>Tem certeza que deseja remover este item?</p>
+			</div>
+			<div class="modal-footer">
+				<form action="/item/excluir" method="post">
+					<input type="hidden" name="id">
+					<button class="btn btn-secondary" type="reset" data-dismiss="modal">Cancelar</button>
+					<button class="btn btn-danger btn-excluir" type="submit">Excluir</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div><!-- #modal-item-excluir -->
