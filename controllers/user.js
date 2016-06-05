@@ -1,6 +1,6 @@
 'use strict';
 
-const Users = require('./../models/user');
+const Users = require('../models/user');
 
 exports.profile = (req, res) => {
   res.send('Perfil do usuário');
@@ -30,7 +30,7 @@ exports.delete = (req, res) => {
   res.send('Remover usuário');
 }
 
-// GET & POST Login
+// GET & POST Login.
 exports.login = (req, res) => {
   const sess = req.session;
 
@@ -54,7 +54,7 @@ exports.login = (req, res) => {
 }
 
 /**
- * GET & POST Cadastro
+ * GET | POST Cadastro.
  */
 exports.signup = (req, res) => {
   switch (req.method) {

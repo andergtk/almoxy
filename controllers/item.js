@@ -1,27 +1,54 @@
 'use strict';
 
-const Items = require('../models/item/index');
+const Items = require('../models/item');
+const itemHelper = require('../helpers/item');
+const enumValues = Items.schema.path('status').enumValues;
+const moment = require('moment');
+moment.locale('pt-br');
 
 /**
- * GET Formulário para adicionar item
+ * GET Formulário para adicionar item.
  */
 exports.form = (req, res) => {
-  const item = req.flash('item')[0] || {};
-
+  res.title('Adicionar item');
   res.render('item/add', {
-    title: 'Adicionar item'
-  , item
+    moment
+  , status: itemHelper.statusFromEnum(enumValues)
+  , item: req.flash('item')[0] || {}
   });
 }
 
 /**
- * POST Salva item no banco de dados
+ * POST Salva item no banco de dados.
  */
 exports.create = (req, res) => {
   const body = req.body;
 
-  if ('almoxarifado' === body.type) {
-    delete body.status;
+  if ('string' !== typeof body.type)
+    body.type = '';
+
+  if ('string' !== typeof body.status)
+    body.status = '';
+
+  if ('string' !== typeof body.description)
+    body.description = '';
+
+  if ('undefined' === typeof body.comment)
+    body.comment = '';
+
+  if ('undefined' === typeof body.amount)
+    body.amount = 0;
+
+  if ('almoxarifado' === body.type && ! body.status.match(/^alx/)) {
+    req.flash('error', 'Valor do campo Status é inválido.');
+    req.flash('item', body);
+    return res.redirect('/item/novo');
+  }
+
+  if ('achados_e_perdidos' === body.type && ! body.status.match(/^aep/)) {
+    req.flash('error', 'Valor do campo Status é inválido.');
+    req.flash('item', body);
+    return res.redirect('/item/novo');
   }
 
   const item = new Items(body);
@@ -40,116 +67,192 @@ exports.create = (req, res) => {
 }
 
 /**
- * GET Informações do item
+ * GET Informações do item.
  */
 exports.info = (req, res) => {
-  req.sanitize('id').escape();
+  const itemId = req.params.id;
 
-  const moment = require('moment');
-  moment.locale('pt-br');
-
-  Items.findOne({ _id: req.params.id }, (err, item) => {
-    if (err) {
-      req.flash('error', 'Erro ao buscar as informações do item')
-      req.flash('error.db', err);
-      res.redirect('/');
-    } else {
-      const hasItems = !! item._id;
-      let title;
-
-      console.log(item._id);
-      console.log(hasItems);
-
-      if (hasItems) {
-        title = item.description;
-        item.id = item._id;
-        item.date = moment(item.date).format('LLL');
-      } else {
-        title = 'Nenhum item encontrado';
-      }
-
-      res.render('item/info', {
-          title
-        , hasItems
-        , item
-      });
+  itemHelper.isValidId(itemId, (result) => {
+    if (! result) {
+      req.flash('info', 'ID do item é inválido');
+      return res.redirect('/');
     }
-  });
-}
 
-/**
- * GET Formulário para editar item
- */
-exports.edit = (req, res) => {
-  Items.findOne({ _id: req.params.id }, (err, item) => {
-    if (err) {
-      req.flash('error', 'Erro ao buscar o item para editar');
-      req.flash('error.db', err);
-      req.redirect('/');
-    } else {
-      const hasItems = !! item._id;
-      let title;
-
-      if (hasItems) {
-        title = 'Editar item';
-      } else {
-        title = 'Nenhum item encontrado'
+    Items.findById(itemId)
+    .limit(1)
+    .exec((err, item) => {
+      if (err) {
+        req.flash('Erro ao buscar informações do item')
+        req.flash('db', err);
+        return res.redirect('/');
       }
 
-      res.render('item/edit', {
-        title
-      , hasItems
+      if (! item) {
+        req.flash('info', 'Item não encontrado');
+        return res.redirect('/');
+      }
+
+      const status = itemHelper.statusFromEnum(enumValues);
+
+      item.id = item._id;
+
+      item.status = (status.hasOwnProperty(item.status))
+        ? status[item.status]
+        : 'Não informado';
+
+      res.title(item.description);
+      res.render('item/info', {
+        hasItems: true
+      , moment
       , item
       });
-    }
-  });
-}
-
-/**
- * POST Atualiza item no banco de dados
- */
-exports.update = (req, res) => {
-  const body = req.body;
-
-  if ('achados-e-perdidos' === body.type) {
-    delete body.status;
-  }
-
-  Items.findById(body.id, (err, item) => {
-    Object.assign(item, body);
-    item.save((err) => {
-      if (err) {
-        req.flash('error', 'Erro ao salvar o item');
-        req.flash('db', err);
-        res.redirect('/item/editar/' + body.id);
-      } else {
-        req.flash('success', 'Item atualizado com successo');
-        res.redirect('/');
-      }
     });
   });
 }
 
 /**
- * GET Remover item
+ * GET Formulário para editar item.
+ */
+exports.edit = (req, res) => {
+  const itemId = req.params.id || null;
+
+  itemHelper.isValidId(itemId, (result) => {
+    if (! result) {
+      req.flash('info', 'ID do item é inválido');
+      return res.redirect('/');
+    }
+
+    Items.findById(itemId)
+      .limit(1)
+      .exec((err, item) => {
+        if (err) {
+          req.flash('error', 'Erro ao buscar item para edição');
+          req.flash('db', err);
+          return res.redirect('/');
+        }
+
+        if (! item) {
+          req.flash('info', 'Item não encontrado');
+          return res.redirect('/');
+        }
+
+        const status = itemHelper.statusFromEnum(enumValues);
+        const oldItem = req.flash('oldItem')[0] || false;
+
+        if (oldItem) {
+          if ('undefined' !== oldItem.status)
+            item.status = oldItem.status;
+
+          if ('undefined' !== oldItem.description)
+            item.description = oldItem.description;
+
+          if ('undefined' !== oldItem.comment)
+            item.comment = oldItem.comment;
+
+          if ('undefined' !== oldItem.amount)
+            item.amount = oldItem.amount;
+        }
+
+        res.title(`Editar "${item.description}"`);
+        res.render('item/edit', {
+          status: itemHelper.statusFilter(status, item.type)
+        , item
+        });
+      });
+  });
+}
+
+/**
+ * POST Atualiza item no banco de dados.
+ */
+exports.update = (req, res) => {
+  const body = req.body;
+  const itemId = body.id || null;
+
+  itemHelper.isValidId(itemId, (result) => {
+    if (! result) {
+      req.flash('info', 'ID do item é inválido');
+      return res.redirect('/');
+    }
+
+    Items.findById(itemId)
+      .limit(1)
+      .exec((err, item) => {
+        if (err) {
+          req.flash('error', 'Erro ao buscar usuário para edição');
+          req.flash('db', err);
+          return res.redirect('/');
+        }
+
+        if ('undefiend' !== typeof body.status) {
+          if ('achados_e_perdidos' === item.type && ! body.status.match(/^aep/)) {
+            req.flash('error', 'Valor do campo Status é inválido.');
+            req.flash('oldItem', body);
+            return res.redirect('/item/editar/' + itemId);
+          }
+
+          if ('almoxarifado' === item.type && ! body.status.match(/^alx/)) {
+            req.flash('error', 'Valor do campo Status é inválido.');
+            req.flash('oldItem', body);
+            return res.redirect('/item/editar/' + itemId);
+          }
+
+          item.status = body.status;
+        }
+
+        if ('undefiend' !== typeof body.description)
+          item.description = body.description;
+
+        if ('undefiend' !== typeof body.comment)
+          item.comment = body.comment;
+
+        if ('undefiend' !== typeof body.amount)
+          item.amount = body.amount;
+
+        item.updated_at = Date.now();
+
+        item.save((err) => {
+          if (err) {
+            req.flash('error', 'Erro ao atualizar o item');
+            req.flash('db', err);
+            req.flash('oldItem', body);
+            res.redirect('/item/editar/' + itemId);
+          } else {
+            req.flash('success', 'Item atualizado com successo');
+            res.redirect('/');
+          }
+        });
+      });
+  });
+}
+
+/**
+ * GET | POST Remover item.
  */
 exports.delete = (req, res) => {
-  Items.findById(req.params.id, (err, item)  => {
-    if (err) {
-      req.flash('error', 'Erro ao buscar o item a ser removido');
-      req.flash('db', err);
-      res.redirect('/');
-    } else {
-      item.remove((err, doc) => {
-        if (err) {
-          req.flash('error', 'Erro ao remover o item');
-          req.flash('db', err);
-          res.redirect('/');
-        } else {
-          req.flash('info', 'Item removido');
-          res.redirect('/');
-        }
-      });
+  let itemId;
+
+  if ('GET' === req.method()) {
+    itemId = req.params.id || null;
+  } else if ('POST' === req.method()) {
+    itemId = req.body.id || null;
+  }
+
+  itemHelper.isValidId(itemId, (result) => {
+    if (! result) {
+      req.flash('info', 'ID do item é inválido');
+      return res.redirect('/');
     }
+
+    item.remove((err, item) => {
+      if (err) {
+        req.flash('error', 'Erro ao remover o item');
+        req.flash('db', err);
+        res.redirect('/');
+      } else {
+        req.flash('info', 'Item removido');
+        res.redirect('/');
+      }
+    });
   });
 }

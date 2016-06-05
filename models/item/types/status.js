@@ -3,8 +3,7 @@
 const enu = {
   values: [
     'alx_disponivel'
-  , 'alx_em_falta'
-  , 'alx_reservado'
+  , 'alx_indisponivel'
   , 'aep_encontrado'
   , 'aep_devolvido'
   ]
