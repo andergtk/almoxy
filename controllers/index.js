@@ -71,13 +71,6 @@ exports.achadosEPerdidos = (req, res, next) => {
 
         items[key].id = items[key]._id;
 
-        items[key].comment = items[key]
-          // Encurta o comentário
-          .comment.split(" ").splice(0, 10).join(" ")
-
-          // Converte quebra de linha em tag html
-          .replace(/\s*\n/g, '<br>');
-
         if (status.hasOwnProperty(items[key].status))
           items[key].status = status[items[key].status];
       }
