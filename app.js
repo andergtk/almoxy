@@ -13,7 +13,7 @@ const app = express();
 
 // Configurações
 const config = require('./config/server');
-const db = require('./config/db')(config.db.URL);
+const db = require('./config/db')(config.db.url);
 
 // Middlewares
 const auth = require('./middlewares/auth');
@@ -22,11 +22,12 @@ const error = require('./middlewares/error');
 
 // Rotas
 const main = require('./routes');
-const user = require('./routes/user');
 const item = require('./routes/item');
+const user = require('./routes/user');
 
-// Titulo base
+// Título base
 app.set('title', config.title);
+app.use(title());
 
 // Ambiente
 app.set('env', config.env);
@@ -40,25 +41,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser(config.secret.cookie));
+app.use(cookieParser(config.secrets.cookie));
 app.use(session({
   resave: false
 , saveUninitialized: true
 , cookie: { maxAge: 30 * 60 * 1000 }
-, secret: config.secret.session
+, secret: config.secrets.session
 , store: new MongoStore({
-    url: config.db.URL
+    url: config.db.url
   })
 }));
 app.use(flash());
-
-app.use(title());
 app.use(auth);
 app.use(main);
-app.use(user);
 app.use(item);
+app.use(user);
 
-// Erros
+// Tratamento de erros
 app.use(error.e404);
 app.use(error.errorHandler);
 

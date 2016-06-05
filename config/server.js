@@ -2,7 +2,7 @@
 
 // Opções do banco de dados
 const db = {
-  URL: 'mongodb://localhost/almoxy'
+  url: 'mongodb://localhost/almoxy'
 }
 
 // Secrets

@@ -2,9 +2,9 @@
 
 const mongoose = require('mongoose');
 
-module.exports = (URL) => {
+module.exports = (url) => {
   // Conecta ao banco de dados
-  mongoose.connect(URL);
+  mongoose.connect(url);
 }
 
 /**
