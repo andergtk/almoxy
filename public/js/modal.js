@@ -1,21 +1,17 @@
 /**
- * Item delete
+ * Remover item
  */
 $('.item-delete').on('click', function(e) {
-  var itemId = $(this)
-    .closest('[data-item-id]')
-      .attr('data-item-id');
-  var itemDescricao = 'Item 007';
-
   e.stopPropagation();
+  e.preventDefault();
 
-  $('#modal-item-excluir .item-descricao').text('"' + itemDescricao + '"');
-  $('#modal-item-excluir').modal()
+  var url = $(this).attr('href') || '#';
+
+  $('#modal-item-delete').modal()
     .on('shown.bs.modal', function() {
       $(this)
-        .find('input[name="id"]')
-          .attr('value', itemId)
-        .nextAll('.btn-excluir')
+        .find('.btn-delete')
+          .attr('href', url)
           .focus();
     });
 });
