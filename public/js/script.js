@@ -1,3 +1,29 @@
+// Inicializa o DataTables
+$('#table-almoxarifado').DataTable({
+  language: {
+    url: "/js/dataTables.pt-br.lang.json"
+  },
+  columns: [
+    null,
+    { width: "50" },
+    { width: "76px" },
+    { width: "76px" }
+  ]
+});
+
+$('#table-achados-e-perdidos').DataTable({
+  language: {
+    url: "/js/dataTables.pt-br.lang.json"
+  },
+  columns: [
+    null,
+    { width: "220px" },
+    { width: "76px" },
+    { width: "76px" },
+    { width: "76px" }
+  ]
+});
+
 /**
  * Ir para a página de informações do item ao clicar na tag <tr>
  */
@@ -10,10 +36,17 @@ $('.btn-item-type').on('click', function() {
   statusToggle(type);
 });
 
+// Chama a função ao carregar a página
+$(statusToggle('almoxarifado'));
+
 /**
  * Altera as opções do select ao mudar o tipo de item
  */
 function statusToggle(type) {
+  if (! type)
+    type = 'almoxarifado';
+
+  console.log('Função chamada\n' + type);
   $('#item-status option').css('display', 'block');
 
   if ('achados_e_perdidos' === type) {
@@ -24,6 +57,3 @@ function statusToggle(type) {
     $('#item-status option[value^="alx"]:first').prop('selected', true);
   }
 }
-
-// Chama a função ao carregar a página
-$(statusToggle('almoxarifado'));
