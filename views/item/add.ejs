@@ -27,14 +27,16 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<p>Status</p>
-							<select id="item-status" class="form-control" name="status" <%= ('object' !== typeof status) ? 'disabled="disabled"' : '' %>>
-								<% if ('object' === typeof status) { %>
-									<% for (var key in status) { %>
-										<% if (! status.hasOwnProperty(key)) continue; %>
-										<option value="<%= key %>" <%= (key === item.status) ? 'selected="selected"' : '' %>><%= status[key] %></option>
+							<% if ('object' !== typeof status) { %>
+								<select id="item-status" class="form-control" name="status" disabled="disabled"></select>
+							<% } else { %>
+								<select id="item-status" class="form-control" name="status">
+									<% for (var option in status) { %>
+										<% if (! status.hasOwnProperty(option)) continue; %>
+										<option value="<%= option %>" <%= (option === item.status) ? 'selected="selected"' : '' %>><%= status[option] %></option>
 									<% } %>
-								<% } %>
-							</select>
+								</select>
+							<% } %>
 						</div>
 					</div><!-- .col -->
 				</div><!-- .row -->

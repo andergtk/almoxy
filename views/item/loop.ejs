@@ -8,10 +8,12 @@
 		<td class="text-xs-right"><%= item.amount %></td>
 	<% } %>
 
-	<% if ('Disponível' === item.status) { %>
+	<% if ('Disponível' === item.status || 'Devolvido' === item.status) { %>
 		<td class="text-xs-center text-success"><%= item.status %></td>
 	<% } else if ('Indisponível' === item.status) { %>
 		<td class="text-xs-center text-danger"><%= item.status %></td>
+	<% } else if ('Encontrado' === item.status) { %>
+		<td class="text-xs-center text-warning"><%= item.status %></td>
 	<% } else { %>
 		<td class="text-xs-center"><%= item.status %></td>
 	<% } %>
