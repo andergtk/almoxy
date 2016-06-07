@@ -1,11 +1,17 @@
 'use strict';
 
-// Opções do banco de dados
+/** Environment */
+const env = process.env.NODE_ENV || 'production';
+
+/** Porta */
+const port = process.env.PORT || 3000;
+
+/** Opções do banco de dados */
 const db = {
   url: 'mongodb://localhost/almoxy'
 }
 
-// Secrets
+/** Secrets */
 const secrets = {
   // Assinatura usada nos cookies
   cookie: '2aEhAr5doPVwiCkdLGx8pcG5jTvmPodY2eM3SmbMc4xgNzgp'
@@ -14,14 +20,10 @@ const secrets = {
 , session: 'oU44aFlsXMtwpgzrKklBdmpfYQOeKBerUONsQXcShQhwMuvg'
 }
 
-// Título base do sistema
-exports.title = 'Almoxy';
+/** Nome do sistema */
+exports.name = 'Almoxy';
 
-// Ambiente
-exports.env = process.env.NODE_ENV || 'production';
-
-// Porta
-exports.port = process.env.PORT || 3000;
-
+exports.env = env;
+exports.port = port;
 exports.db = db;
 exports.secrets = secrets;

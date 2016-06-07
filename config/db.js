@@ -2,8 +2,12 @@
 
 const mongoose = require('mongoose');
 
-module.exports = (url) => {
-  // Conecta ao banco de dados
+exports = module.exports = connection;
+
+/**
+ * Conexão com o banco de dados.
+ */
+function connection(url) {
   mongoose.connect(url);
 }
 

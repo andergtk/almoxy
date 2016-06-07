@@ -5,10 +5,8 @@
  */
 exports.e404 = (req, res, next) => {
   let err = new Error('O recurso requisitado não foi encontrado.');
-
   err.status = 404;
   err.name = 'Não encontrado';
-
   next(err);
 }
 

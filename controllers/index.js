@@ -2,11 +2,20 @@
 
 const Items = require('../models/item');
 const itemHelper = require('../helpers/item');
+const enumValues = Items.schema.path('status').enumValues;
+const status = itemHelper.statusFromEnum(enumValues);
+
 const moment = require('moment');
 moment.locale('pt-br');
 
-// GET Página inicial
-exports.index = (req, res, next) => {
+exports.index = index;
+exports.achadosEPerdidos = achadosEPerdidos;
+
+/**
+ * GET
+ * Página inicial.
+ */
+function index(req, res, next) {
   Items.find({ type: 'almoxarifado' })
     .sort({ created_at: 'desc' })
     .exec((err, items) => {
@@ -17,25 +26,16 @@ exports.index = (req, res, next) => {
 
       res.title('Almoxarifado');
 
-      if (! items.length) {
-        return res.render('index', {
-          hasItems: false
-        });
-      }
+      if (! items.length)
+        return res.render('index', { hasItems: false });
 
-      const enumValues = Items.schema.path('status').enumValues;
-      const status = itemHelper.statusFromEnum(enumValues);
+      for (var i in items) {
+        if (! items.hasOwnProperty(i)) continue;
 
-      for (var key in items) {
-        if (! items.hasOwnProperty(key)) continue;
-
-        items[key].id = items[key]._id;
-
-        if (status.hasOwnProperty(items[key].status)) {
-          items[key].status = status[items[key].status];
-        } else {
-          items[key].status = 'Não informado';
-        }
+        items[i].id = items[i]._id;
+        items[i].status = (status.hasOwnProperty(items[i].status))
+          ? status[items[i].status]
+          : 'Não informado';
       }
 
       res.render('index', {
@@ -45,8 +45,11 @@ exports.index = (req, res, next) => {
     });
 }
 
-// GET Achados e perdidos
-exports.achadosEPerdidos = (req, res, next) => {
+/**
+ * GET
+ * Página Achados e perdidos.
+ */
+function achadosEPerdidos(req, res, next) {
   Items.find({ type: 'achados_e_perdidos' })
     .sort({ created_at: 'desc' })
     .exec((err, items) => {
@@ -57,22 +60,16 @@ exports.achadosEPerdidos = (req, res, next) => {
 
       res.title('Achados e perdidos');
 
-      if (! items.length) {
-        return res.render('achados-e-perdidos', {
-          hasItems: false
-        });
-      }
+      if (! items.length)
+        return res.render('achados-e-perdidos', { hasItems: false });
 
-      const enumValues = Items.schema.path('status').enumValues;
-      const status = itemHelper.statusFromEnum(enumValues);
+      for (var i in items) {
+        if (! items.hasOwnProperty(i)) continue;
 
-      for (var key in items) {
-        if (! items.hasOwnProperty(key)) continue;
-
-        items[key].id = items[key]._id;
-
-        if (status.hasOwnProperty(items[key].status))
-          items[key].status = status[items[key].status];
+        items[i].id = items[i]._id;
+        items[i].status = (status.hasOwnProperty(items[i].status))
+          ? status[items[i].status]
+          : 'Não informado';
       }
 
       res.render('achados-e-perdidos', {

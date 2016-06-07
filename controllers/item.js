@@ -3,13 +3,22 @@
 const Items = require('../models/item');
 const itemHelper = require('../helpers/item');
 const enumValues = Items.schema.path('status').enumValues;
+
 const moment = require('moment');
 moment.locale('pt-br');
 
+exports.form = form;
+exports.create = create;
+exports.info = info;
+exports.edit = edit;
+exports.update = update;
+exports.remove = remove;
+
 /**
- * GET Formulário para adicionar item.
+ * GET
+ * Formulário para adicionar item.
  */
-exports.form = (req, res) => {
+function form(req, res) {
   res.title('Adicionar item');
   res.render('item/add', {
     moment
@@ -19,9 +28,10 @@ exports.form = (req, res) => {
 }
 
 /**
- * POST Salva item no banco de dados.
+ * POST
+ * Salva item no banco de dados.
  */
-exports.create = (req, res) => {
+function create(req, res) {
   const body = req.body;
 
   if ('string' !== typeof body.type)
@@ -67,9 +77,10 @@ exports.create = (req, res) => {
 }
 
 /**
- * GET Informações do item.
+ * GET
+ * Informações do item.
  */
-exports.info = (req, res) => {
+function info(req, res) {
   const itemId = req.params.id;
 
   itemHelper.isValidId(itemId, (result) => {
@@ -114,9 +125,10 @@ exports.info = (req, res) => {
 }
 
 /**
- * GET Formulário para editar item.
+ * GET
+ * Formulário para editar item.
  */
-exports.edit = (req, res) => {
+function edit(req, res) {
   const itemId = req.params.id || null;
 
   itemHelper.isValidId(itemId, (result) => {
@@ -166,9 +178,10 @@ exports.edit = (req, res) => {
 }
 
 /**
- * POST Atualiza item no banco de dados.
+ * POST
+ * Atualiza item no banco de dados.
  */
-exports.update = (req, res) => {
+function update(req, res) {
   const body = req.body;
   const itemId = body.id || null;
 
@@ -235,9 +248,10 @@ exports.update = (req, res) => {
 }
 
 /**
- * GET | POST Remover item.
+ * GET / POST
+ * Remover item.
  */
-exports.delete = (req, res) => {
+function remove(req, res) {
   let itemId;
 
   if ('GET' === req.method) {

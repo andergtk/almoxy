@@ -5,10 +5,6 @@ const ObjectId = mongoose.Types.ObjectId;
 
 /**
  * Testa se o parâmetro ID é válido.
- *
- * @param  {String}   id  ID do item.
- * @param  {Function} cb  Função de callback.
- * @return {Boolean}
  */
 exports.isValidId = (id, cb) => {
   if ('string' !== typeof id)
@@ -27,9 +23,6 @@ exports.isValidId = (id, cb) => {
 
 /**
  * Lista de status a partir do enum do schema.
- *
- * @param   {Array} enumValues  Lista de status.
- * @return  {Object}            Lista de status com descrição.
  */
 exports.statusFromEnum = (enumValues) => {
   if (! Array.isArray(enumValues))
@@ -58,10 +51,6 @@ exports.statusFromEnum = (enumValues) => {
 
 /**
  * Lista de status específicos para cada tipo de item.
- *
- * @param   {Object}  status  Lista dos status.
- * @param   {String}  type    Tipo do item.
- * @return  {Object}          Lista dos status específicos de cada tipo de item.
  */
 exports.statusFilter = (status, type) => {
   if ('object' !== typeof status)
@@ -74,11 +63,11 @@ exports.statusFilter = (status, type) => {
     if (! status.hasOwnProperty(option)) continue;
 
     if ('almoxarifado' === type &&
-      ! option.match(/^alx_/))
+      ! option.match(/^alx/))
       delete status[option];
 
     if ('achados_e_perdidos' === type &&
-      ! option.match(/^aep_/))
+      ! option.match(/^aep/))
       delete status[option];
   }
 

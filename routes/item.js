@@ -4,18 +4,18 @@ const router = require('express').Router();
 
 const itemController = require('../controllers/item');
 
-// Adicionar item
+/** Adicionar item */
 router.route('/item/novo')
   // Formulário
   .get(itemController.form)
 
   .post(itemController.create);
 
-// Informações do item
+/** Informações do item */
 router.route('/item/info/:id')
   .get(itemController.info);
 
-// Editar item
+/** Editar item */
 router.route('/item/editar/:id')
   // Formulário
   .get(itemController.edit);
@@ -23,11 +23,11 @@ router.route('/item/editar/:id')
 router.route('/item/editar')
   .post(itemController.update);
 
-// Remover item
+/** Remover item */
 router.route('/item/remover')
-  .post(itemController.delete);
+  .post(itemController.remove);
 
 router.route('/item/remover/:id')
-  .get(itemController.delete);
+  .get(itemController.remove);
 
 module.exports = router;
