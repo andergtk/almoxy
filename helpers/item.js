@@ -7,18 +7,21 @@ const ObjectId = mongoose.Types.ObjectId;
  * Testa se o parâmetro ID é válido.
  */
 exports.isValidId = (id, cb) => {
-  if ('string' !== typeof id)
-    cb(false);
+  let result = false;
 
-  // Testa pelo tamanho da string
-  if (! ObjectId.isValid(id))
-    cb(false);
+  if ('string' === typeof id) {
+    // Testa pelo tamanho da string
+    if (ObjectId.isValid(id)) {
+      // IDs válidos não são alterados quando passados no ObjectId()
+      if (ObjectId(id).toString() === id) {
+        result = true;
+      }
+    }
+  }
 
-  // IDs válidos não são alterados quando passados no ObjectId()
-  if (ObjectId(id).toString() !== id)
-    cb(false);
-
-  cb(true);
+  process.nextTick(function() {
+    cb(result);
+  });
 }
 
 /**
