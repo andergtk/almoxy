@@ -59,7 +59,7 @@ app.use(error.e404);
 app.use(error.errorHandler);
 
 app.listen(config.port, () => {
-  console.log(`[Servidor] Rodando em "localhost:${config.port}"`);
+  console.log(`[Servidor] Rodando em 'localhost:${config.port}'`);
 });
 
 /** Exprota o app */

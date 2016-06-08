@@ -3,10 +3,14 @@
 const mongoose = require('mongoose')
 const ObjectId = mongoose.Types.ObjectId;
 
+exports.isValidId = isValidId;
+exports.statusFromEnum = statusFromEnum;
+exports.statusFilter = statusFilter;
+
 /**
  * Testa se o parâmetro ID é válido.
  */
-exports.isValidId = (id, cb) => {
+function isValidId (id, cb) {
   let result = false;
 
   if ('string' === typeof id) {
@@ -19,6 +23,7 @@ exports.isValidId = (id, cb) => {
     }
   }
 
+  // Faz o async real acontecer
   process.nextTick(function() {
     cb(result);
   });
@@ -27,11 +32,11 @@ exports.isValidId = (id, cb) => {
 /**
  * Lista de status a partir do enum do schema.
  */
-exports.statusFromEnum = (enumValues) => {
+function statusFromEnum (enumValues) {
+  let status = {};
+
   if (! Array.isArray(enumValues))
     return;
-
-  let status = {};
 
   enumValues.forEach((option) => {
     switch (option) {
@@ -55,22 +60,20 @@ exports.statusFromEnum = (enumValues) => {
 /**
  * Lista de status específicos para cada tipo de item.
  */
-exports.statusFilter = (status, type) => {
+function statusFilter (status, type) {
   if ('object' !== typeof status)
     throw new Error('O parâmetro \'status\' deve ser do tipo Object');
 
   if ('string' !== typeof type)
     throw new Error('O parâmetro \'type\' deve ser do tipo String');
 
-  for (var option in status) {
+  for (let option in status) {
     if (! status.hasOwnProperty(option)) continue;
 
-    if ('almoxarifado' === type &&
-      ! option.match(/^alx/))
+    if ('almoxarifado' === type && ! option.match(/^alx/))
       delete status[option];
 
-    if ('achados_e_perdidos' === type &&
-      ! option.match(/^aep/))
+    if ('achados_e_perdidos' === type && ! option.match(/^aep/))
       delete status[option];
   }
 

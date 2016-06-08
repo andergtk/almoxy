@@ -29,7 +29,7 @@ function index(req, res, next) {
       if (! items.length)
         return res.render('index', { hasItems: false });
 
-      for (var i in items) {
+      for (let i in items) {
         if (! items.hasOwnProperty(i)) continue;
 
         items[i].id = items[i]._id;
@@ -63,7 +63,7 @@ function achadosEPerdidos(req, res, next) {
       if (! items.length)
         return res.render('achados-e-perdidos', { hasItems: false });
 
-      for (var i in items) {
+      for (let i in items) {
         if (! items.hasOwnProperty(i)) continue;
 
         items[i].id = items[i]._id;

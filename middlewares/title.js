@@ -1,18 +1,20 @@
 'use strict';
 
-module.exports = (format) => {
-  format = format || '%title% - %base%';
+exports = module.exports = title;
+
+/**
+ * Gerencia o título do sistema.
+ */
+function title() {
+  const format = '%title% - %base%';
 
   return (req, res, next) => {
 		res.locals.name = req.app.get('name');
-
     res.title = (title) => {
-			res.locals.pageTitle = title || 'Sem título';
-
-      title = format.replace(/%title%/ig, title || 'Sem título');
-      title = title.replace(/%base%/ig, req.app.get('title'));
-      res.locals.title = title;
-      return this;
+      title = title || 'Sem título';
+      res.locals.pageTitle = title;
+      res.locals.title = format.replace(/%title%/ig, title);
+      res.locals.title = res.locals.title.replace(/%base%/ig, req.app.get('name'));
     }
     next();
   }

@@ -7,11 +7,11 @@ const Schema = mongoose.Schema;
  * Schema do histórico do item
  */
 const HistorySchema = new Schema({
-    status: require('./types/status')
-  , description: require('./types/description')
-  , comment: String
-  , amount: require('./types/amount')
-  , created_at: require('./types/date')
+  status: require('./types/status')
+, description: require('./types/description')
+, comment: String
+, amount: require('./types/amount')
+, created_at: require('./types/date')
 });
 
 /**

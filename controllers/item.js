@@ -82,6 +82,7 @@ function create(req, res) {
  */
 function info(req, res) {
   const itemId = req.params.id;
+  const status = itemHelper.statusFromEnum(enumValues);
 
   itemHelper.isValidId(itemId, (result) => {
     if (! result) {
@@ -103,10 +104,7 @@ function info(req, res) {
         return res.redirect('/');
       }
 
-      const status = itemHelper.statusFromEnum(enumValues);
-
       item.id = item._id;
-
       item.status = (status.hasOwnProperty(item.status))
         ? status[item.status]
         : 'Não informado';
@@ -130,6 +128,8 @@ function info(req, res) {
  */
 function edit(req, res) {
   const itemId = req.params.id || null;
+  const status = itemHelper.statusFromEnum(enumValues);
+  const oldItem = req.flash('oldItem')[0] || false;
 
   itemHelper.isValidId(itemId, (result) => {
     if (! result) {
@@ -150,9 +150,6 @@ function edit(req, res) {
           req.flash('info', 'Item não encontrado');
           return res.redirect('/');
         }
-
-        const status = itemHelper.statusFromEnum(enumValues);
-        const oldItem = req.flash('oldItem')[0] || false;
 
         if (oldItem) {
           if ('undefined' !== oldItem.status)
@@ -254,10 +251,15 @@ function update(req, res) {
 function remove(req, res) {
   let itemId;
 
-  if ('GET' === req.method) {
-    itemId = req.params.id || null;
-  } else if ('POST' === req.method()) {
-    itemId = req.body.id || null;
+  switch (req.method) {
+    case 'GET':
+      itemId = req.params.id;
+      break;
+    case 'POST':
+      itemId = req.body.id;
+      break;
+    default:
+      itemId = null;
   }
 
   itemHelper.isValidId(itemId, (result) => {
