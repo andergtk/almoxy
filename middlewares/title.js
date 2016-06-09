@@ -9,7 +9,7 @@ function title() {
   const format = '%title% - %base%';
 
   return (req, res, next) => {
-		res.locals.name = req.app.get('name');
+		res.locals.name = req.app.get('name') || 'Sem nome';
     res.title = (title) => {
       title = title || 'Sem título';
       res.locals.pageTitle = title;
